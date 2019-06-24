@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>销售系统</title>
+  <link rel="stylesheet" href="css/vendor/element.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div id="mainframe" style="height: 100%"></div>
+</body>
+<script src="js/vendor/jquery-3.2.1.min.js"></script>
+<script src="js/vendor/vue.min.js"></script>
+<script src="js/vendor/element.js"></script>
+<script src="js/vendor/moment.js"></script>
+<script src="js/vendor/async.js"></script>
+<script>
+  $.getScript("js/initiator.js");
+  $.getScript("js/widget.js");
+  $('#mainframe').load('html/login.html');  
+</script>
+
+</html>

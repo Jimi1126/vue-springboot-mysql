@@ -1,0 +1,117 @@
+<style>
+  .customer{
+    color: #409eff;
+  }
+  .customer-title{
+    color: #909399;
+  }
+</style>
+<div id="customer_app" class="layout">
+  <div class="header">
+    <el-row>
+      <el-col :span="12" style="text-align:left;">联系人</el-col>
+      <el-col :span="12" style="text-align: right;">
+        <el-button @click="addBtnEvent">新增</el-button>
+        <el-button>导出</el-button>
+        <el-button @click="importBtnEvt">导入</el-button>
+      </el-col>
+    </el-row>
+
+    <div style="width: 100%; height: 6px; border-bottom: 1px #000 solid"></div>
+
+    <el-form ref="form" :model="search_form" label-width="80px" size="mini" style="margin-top: 6px;">
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="客户名称:">
+            <el-input v-model="search_form.name"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="所属行业:">
+            <el-select solt="prepend" v-model="search_form.trade" clearable>
+              <el-option v-for="item in trades" :label="item.name" :value=item.code></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="业务员:">
+            <el-select solt="prepend" v-model="search_form.uid" clearable>
+              <el-option v-for="item in trades" :label="item.name" :value=item.code></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="客户状态:">
+            <el-select solt="prepend" v-model="search_form.status" clearable>
+              <el-option v-for="item in statuss" :label="item.name" :value=item.code></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="客户来源:">
+            <el-select solt="prepend" v-model="search_form.origin" clearable>
+              <el-option v-for="item in origins" :label="item.name" :value=item.code></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-form-item label="地区:">
+        <el-row>
+          <el-col :span="4">
+            <el-select solt="prepend" v-model="search_form.country" @change="select_change" filterable clearable
+              placeholder="国家">
+              <el-option v-for="item in countrys" :label="item.areaname" :value=item.areaid></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="5">
+            <el-select solt="prepend" v-model="search_form.province" @change="select_change" filterable clearable
+              placeholder="省份">
+              <el-option v-for="item in provinces" :label="item.areaname" :value=item.areaid></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="5">
+            <el-select solt="prepend" v-model="search_form.city" filterable clearable placeholder="城市">
+              <el-option v-for="item in citys" :label="item.areaname" :value=item.areaid></el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="2">
+            <el-button type="primary" @click="findBtnEvent">查询</el-button>
+          </el-col>
+        </el-row>
+      </el-form-item>
+    </el-form>
+  </div>
+
+  <div style="width: 100%; height: 6px; border-bottom: 1px #000 solid"></div>
+
+  <el-table :data="customList.slice((currentPage-1)*pagesize,currentPage*pagesize)" border height="440" stripe @cell-click="cellClickEvent" style="width: 100%;">
+    <el-table-column prop="regDate" label="登记日期" :show-overflow-tooltip="tooltip" width="100"></el-table-column>
+    <el-table-column prop="name" label="客户名称" class-name="customer" label-class-name="customer-title" :show-overflow-tooltip="tooltip" :formatter="displayFormat"></el-table-column>
+    <el-table-column prop="city" label="城市" :show-overflow-tooltip="tooltip" :formatter="displayFormat"></el-table-column>
+    <el-table-column prop="origin" label="来源" :show-overflow-tooltip="tooltip" :formatter="displayFormat"></el-table-column>
+    <el-table-column prop="trade" label="行业" :show-overflow-tooltip="tooltip" :formatter="displayFormat"></el-table-column>
+    <el-table-column prop="status" label="状态" :show-overflow-tooltip="tooltip" :formatter="displayFormat"></el-table-column>
+    <el-table-column prop="remark" label="备注" :show-overflow-tooltip="tooltip"></el-table-column>
+    <el-table-column prop="nextTime" label="下次联系时间" :show-overflow-tooltip="tooltip" width="110"></el-table-column>
+    <el-table-column prop="lastTime" label="最后联系时间" :show-overflow-tooltip="tooltip" width="110"></el-table-column>
+    <el-table-column prop="stffName" label="业务员" :show-overflow-tooltip="tooltip"></el-table-column>
+    <el-table-column width="125" label="操作">
+      <template slot-scope="scope">
+        <el-button size="mini" @click="editBtnEvent(scope.$index, scope.row)"><i class="el-icon-edit"></i></el-button>
+        <el-button size="mini" @click="delBtnEvent(scope.$index, scope.row)"><i class="el-icon-delete"></i></el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+  <el-pagination 
+    @size-change="handleSizeChange" 
+    @current-change="handleCurrentChange" 
+    :current-page="currentPage"
+    :page-sizes="[5, 10, 20, 40]"
+    :page-size="pagesize"
+    layout="total, sizes, prev, pager, next, jumper" :total="customList.length">
+  </el-pagination>
+</div>
+
+<script src="js/business/customer.js"></script>

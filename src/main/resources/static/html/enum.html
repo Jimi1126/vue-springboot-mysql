@@ -1,0 +1,48 @@
+<div id="main_app" class="layout">
+  <div class="header">
+    <el-row>
+      <el-col :span="12" style="text-align:left;">枚举管理</el-col>
+      <el-col :span="12" style="text-align: right;">
+        <el-button @click="addBtnEvent">新增</el-button>
+        <el-button>导出</el-button>
+      </el-col>
+    </el-row>
+
+    <div style="width: 100%; height: 6px; border-bottom: 1px #000 solid"></div>
+
+    <el-form ref="form" :model="search_form" label-width="80px" size="mini" style="margin-top: 6px;">
+      <el-row>
+        <el-col :span="8">
+          <el-form-item label="类型名称:">
+            <el-input v-model="search_form.typeName"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="枚举名称:">
+            <el-input v-model="search_form.name"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="2">
+          <el-button type="primary" size="mini" @click="findBtnEvent">查询</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
+  </div>
+
+  <div style="width: 100%; height: 6px; border-bottom: 1px #000 solid"></div>
+
+  <el-table :data="mainList" border height="450" stripe style="width: 100%;">
+    <el-table-column prop="type" label="类型编码" sortable></el-table-column>
+    <el-table-column prop="typeName" label="类型名称"></el-table-column>
+    <el-table-column prop="code" label="枚举编码"></el-table-column>
+    <el-table-column prop="name" label="枚举名称"></el-table-column>
+    <el-table-column width="125" label="操作">
+      <template slot-scope="scope">
+        <el-button size="mini" @click="editBtnEvent(scope.$index, scope.row)"><i class="el-icon-edit"></i></el-button>
+        <el-button size="mini" @click="delBtnEvent(scope.$index, scope.row)"><i class="el-icon-delete"></i></el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+</div>
+
+<script src="js/business/enum.js"></script>
