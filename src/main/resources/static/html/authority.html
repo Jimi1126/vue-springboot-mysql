@@ -4,7 +4,7 @@
       <el-col :span="12" style="text-align:left;">权限管理</el-col>
       <el-col :span="12" style="text-align: right;">
         <el-button @click="addBtnEvent">新增权限</el-button>
-        <el-button>权限控制</el-button>
+        <el-button @click="authBtnEvent">权限控制</el-button>
       </el-col>
     </el-row>
 
@@ -34,7 +34,7 @@
   <el-table :data="mainList" border height="450" stripe style="width: 100%;">
     <el-table-column prop="username" :show-overflow-tooltip="tooltip" label="用户"></el-table-column>
     <el-table-column prop="authname" :show-overflow-tooltip="tooltip" label="权限"></el-table-column>
-    <el-table-column prop="state" :show-overflow-tooltip="tooltip" label="状态"></el-table-column>
+    <el-table-column prop="state" :show-overflow-tooltip="tooltip" :formatter="displayFormat" label="状态"></el-table-column>
     <el-table-column width="125" label="操作">
       <template slot-scope="scope">
         <el-button size="mini" @click="editBtnEvent(scope.$index, scope.row)"><i class="el-icon-edit"></i></el-button>

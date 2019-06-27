@@ -282,8 +282,8 @@
 <!--    <table tableName="ic_sms_purchase"></table>-->
 <!--    <table tableName="ic_sms_user"></table>-->
 <!--    <table tableName="ic_sms_work_feedback"></table>-->
-    <table tableName="ic_sms_authority"></table>
-    <table tableName="ic_sms_access_control"></table>
-    
+<!--    <table tableName="ic_sms_authority"></table>-->
+<!--    <table tableName="ic_sms_access_control"></table>-->
+    <table tableName="ic_sms_pwd"></table>
   </context>
 </generatorConfiguration>

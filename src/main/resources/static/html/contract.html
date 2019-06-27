@@ -4,7 +4,7 @@
       <el-col :span="12" style="text-align:left;">合同管理</el-col>
       <el-col :span="12" style="text-align: right;">
         <el-button @click="addBtnEvent">新增</el-button>
-        <el-button>导出</el-button>
+        <el-button @click="exportTable">导出</el-button>
       </el-col>
     </el-row>
 
@@ -63,7 +63,7 @@
 
   <div style="width: 100%; height: 6px; border-bottom: 1px #000 solid"></div>
 
-  <el-table :data="customList" border height="450" stripe style="width: 100%;">
+  <el-table :data="customList" border height="450" stripe style="width: 100%;" id="CT_Table">
     <el-table-column prop="contractTime" :show-overflow-tooltip="tooltip" label="年份"></el-table-column>
     <!-- <el-table-column prop="name" label="月份"></el-table-column> -->
     <el-table-column prop="customerName" :show-overflow-tooltip="tooltip" label="客户名称"></el-table-column>

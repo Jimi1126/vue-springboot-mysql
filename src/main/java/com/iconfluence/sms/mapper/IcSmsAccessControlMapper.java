@@ -47,10 +47,10 @@ public interface IcSmsAccessControlMapper extends BaseMapper<IcSmsAccessControl,
     @Insert({
         "insert into ic_sms_access_control (gid, authid, ",
         "authname, userid, ",
-        "usercode, state)",
+        "username, state)",
         "values (#{gid,jdbcType=VARCHAR}, #{authid,jdbcType=VARCHAR}, ",
         "#{authname,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, ",
-        "#{usercode,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR})"
+        "#{username,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR})"
     })
     int insert(IcSmsAccessControl record);
 
@@ -75,7 +75,7 @@ public interface IcSmsAccessControlMapper extends BaseMapper<IcSmsAccessControl,
         @Arg(column="authid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="authname", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="userid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="usercode", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="username", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="state", javaType=String.class, jdbcType=JdbcType.VARCHAR)
     })
     List<IcSmsAccessControl> selectByExample(IcSmsAccessControlExample example);
@@ -88,7 +88,7 @@ public interface IcSmsAccessControlMapper extends BaseMapper<IcSmsAccessControl,
      */
     @Select({
         "select",
-        "gid, authid, authname, userid, usercode, state",
+        "gid, authid, authname, userid, username, state",
         "from ic_sms_access_control",
         "where gid = #{gid,jdbcType=VARCHAR}"
     })
@@ -97,7 +97,7 @@ public interface IcSmsAccessControlMapper extends BaseMapper<IcSmsAccessControl,
         @Arg(column="authid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="authname", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="userid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="usercode", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="username", javaType=String.class, jdbcType=JdbcType.VARCHAR),
         @Arg(column="state", javaType=String.class, jdbcType=JdbcType.VARCHAR)
     })
     IcSmsAccessControl selectByPrimaryKey(String gid);
@@ -140,7 +140,7 @@ public interface IcSmsAccessControlMapper extends BaseMapper<IcSmsAccessControl,
         "set authid = #{authid,jdbcType=VARCHAR},",
           "authname = #{authname,jdbcType=VARCHAR},",
           "userid = #{userid,jdbcType=VARCHAR},",
-          "usercode = #{usercode,jdbcType=VARCHAR},",
+          "username = #{username,jdbcType=VARCHAR},",
           "state = #{state,jdbcType=VARCHAR}",
         "where gid = #{gid,jdbcType=VARCHAR}"
     })

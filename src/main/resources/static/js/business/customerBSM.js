@@ -42,7 +42,7 @@ CustomerBuySysManage.prototype = {
     var that = this;
     return new Dialog({
       title: flag ? "修改" : "新增",
-      width: "30%",
+      width: "450px",
       body:
         `<el-form ref="form" label-width="90px">
           <el-form-item label="客户名称：">
@@ -52,7 +52,8 @@ CustomerBuySysManage.prototype = {
             <el-input v-model="form.usercode"></el-input>
           </el-form-item>
           <el-form-item label="密码：">
-            <el-input v-model="form.password"></el-input>
+            <el-input v-model="form.password" type="password" style="width:210px"></el-input>
+            <el-button @click="showPwdEvent">查看密码</el-button>
           </el-form-item>
           <el-form-item label="网址：">
             <el-input v-model="form.site"></el-input>
@@ -66,6 +67,22 @@ CustomerBuySysManage.prototype = {
         </el-form>`,
       data: {
         form: that.newform()
+      },
+      methods: {
+        showPwdEvent: function() {
+          var showPwdRoles = "";
+          var auths = ic_sms.auths.filter((it)=> {
+            return it.machine == "0002" && it.keyword == "showCustomPwd"
+          }).forEach((it)=> {
+            showPwdRoles += it.roles;
+          });
+          if (showPwdRoles.indexOf(ic_sms.user.rid) == -1) {
+            return alert("没有权限");
+          }
+          $.post("/pwd/selectByExample", {rid: this._vue.$data.form.gid}, function(response) {
+            alert(response.data[0] && (response.data[0].pwd || ""));
+          })
+        }
       },
       buttons: [
         {
@@ -137,13 +154,23 @@ CustomerBuySysManage.prototype = {
    */
   completeComponent: function () {
     var that = this;
+    var $tableTH = $("#CSBSM_Table").children();
+    this.titles = [];
+    this.fields = [];
+    $.each($tableTH, function (ind, row) {
+      if($(row).attr("label")=="操作"){
+        return
+      }
+      that.titles.push($(row).attr("label"));
+      that.fields.push($(row).attr("prop"));
+    })
     that.page_vue = new Vue({
       el: "#customer-buy-sys-tab",
       data: {
         customTable: [],
         tooltip: true,
         search_form: {
-          name
+          name:""
         }
       },
       methods: {
@@ -161,6 +188,20 @@ CustomerBuySysManage.prototype = {
           that.delDialogComponent._vue.$data.rowData = row;
           that.delDialogComponent.show();
         },
+        displayFormat: function(row, column, cellValue, index) {
+          switch(column.property) {
+            case "password":
+                return "*******";
+            default:
+              return cellValue;
+          }
+        },
+        exportTable: () => {
+          var searchForm=that.page_vue.$data.search_form;
+          var cloneObj = Util.clone(searchForm);
+          cloneObj.name = cloneObj.name ? `%${cloneObj.name}%` : '';
+          exportTable("purchase",searchForm,this.titles,this.fields,"客户采购系统管理");
+        }
       },
     })
   },

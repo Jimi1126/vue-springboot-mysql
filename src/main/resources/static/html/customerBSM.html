@@ -4,7 +4,7 @@
       <el-col :span="12" style="text-align:left;">客户采购系统管理</el-col>
       <el-col :span="12" style="text-align:right">
         <el-button @click="addBtnEvent">新增</el-button>
-        <el-button>导出</el-button>
+        <el-button @click="exportTable">导出</el-button>
       </el-col>
     </el-row>
     <div style="width: 100%; height: 6px; border-bottom: 1px #000 solid"></div>
@@ -23,10 +23,10 @@
     </el-form>
   </div>
   <div style="width: 100%; height: 6px; border-bottom: 1px #000 solid"></div>
-  <el-table :data="customTable" height="500" border stripe style="width: 100%;">
+  <el-table :data="customTable" height="500" border stripe style="width: 100%;" id="CSBSM_Table">
     <el-table-column prop="name" :show-overflow-tooltip="tooltip" label="客户名称"></el-table-column>
     <el-table-column prop="usercode" :show-overflow-tooltip="tooltip" label="账号"></el-table-column>
-    <el-table-column prop="password" :show-overflow-tooltip="tooltip" label="密码"></el-table-column>
+    <el-table-column prop="password" :show-overflow-tooltip="tooltip" :formatter="displayFormat" label="密码"></el-table-column>
     <el-table-column prop="site" :show-overflow-tooltip="tooltip" label="网站"></el-table-column>
     <el-table-column prop="uid" :show-overflow-tooltip="tooltip" label="经办人"></el-table-column>
     <el-table-column width="125" label="操作">

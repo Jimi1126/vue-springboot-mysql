@@ -2,7 +2,7 @@
 
 <configuration debug="false">
   <!-- 日志输出存储地址 使用绝对路径 -->
-  <property name="LOG_HOME" value="D:/workspace/sms/log"/>
+  <property name="LOG_HOME" value="/sms/log"/>
   <!-- 控制台输出 -->
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符-->

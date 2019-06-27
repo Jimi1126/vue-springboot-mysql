@@ -12,7 +12,7 @@
 
 		// plusequals test for += 100 -= 100
 		rplusequals = /^([\-+])=\s*(\d+\.?\d*)/,
-		// a set of RE's that can match strings and generate color tuples.
+		// a set of RE's that can match strings and customMapper color tuples.
 		stringParsers = [{
 				re: /rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d+(?:\.\d+)?)\s*)?\)/,
 				parse: function( execResult ) {
@@ -494,7 +494,7 @@
 		// makes rgba() and hsla()
 		color.fn[ spaceName ] = function( value ) {
 
-			// generate a cache for this space if it doesn't exist
+			// customMapper a cache for this space if it doesn't exist
 			if ( to && !this[ cache ] ) {
 				this[ cache ] = to( this._rgba );
 			}

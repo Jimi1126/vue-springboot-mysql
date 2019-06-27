@@ -15,9 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,7 +117,7 @@ public abstract class BaseContext<E extends BaseEntity, T> {
 
   @ResponseBody
   @RequestMapping(value = "updateByExample", method = RequestMethod.POST)
-  public CommonReturnType updateByExample(E record, E entity) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+  public CommonReturnType updateByExample(E record, E entity) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, UnsupportedEncodingException, NoSuchAlgorithmException {
     try {
       int result = service.updateByExample(record, entity2example(entity));
       return CommonReturnType.create(result);
@@ -126,7 +128,7 @@ public abstract class BaseContext<E extends BaseEntity, T> {
 
   @ResponseBody
   @RequestMapping(value = "updateByPrimaryKey", method = RequestMethod.POST)
-  public CommonReturnType updateByPrimaryKey(E record) {
+  public CommonReturnType updateByPrimaryKey(E record) throws NoSuchMethodException, NoSuchAlgorithmException, InstantiationException, UnsupportedEncodingException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
     try {
       int result = service.updateByPrimaryKey(record);
       return CommonReturnType.create(result);

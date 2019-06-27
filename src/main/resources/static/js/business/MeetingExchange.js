@@ -207,6 +207,16 @@ MeetingExchange.prototype = {
     },
     completeComponent: function () {
         var that = this;
+        var $tableTH = $("#ME_table").children();
+        this.titles = [];
+        this.fields = [];
+        $.each($tableTH, function (ind, row) {
+            if($(row).attr("label")=="操作"){
+                return
+            }
+            that.titles.push($(row).attr("label"))
+            that.fields.push($(row).attr("prop"));
+        });
         that.mainTable = new Vue({
             el: "#MeetingExchange",
             data: {
@@ -302,6 +312,12 @@ MeetingExchange.prototype = {
                         that.mainTable.$data.search_form.city = "";
                     }
                 },
+                exportTable: () => {
+                    var searchForm=that.page_vue.$data.search_form;
+                    var cloneObj = Util.clone(searchForm);
+                    cloneObj.theme = cloneObj.theme ? `%${cloneObj.theme}%` : '';
+                    exportTable("meeting",searchForm,this.titles,this.fields,"会议交流管理");
+                }
             },
         })
     },

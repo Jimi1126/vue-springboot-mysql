@@ -6,16 +6,18 @@ Main.prototype = {
    * 构造组件动作.
    */
   init: function () {
-    this.initData();
+    var that = this;
     this.adjustUI();
-    this.initComponent();
-    this.completeComponent();
-    this.bindEvent();
+    this.initData(function() {
+      that.initComponent();
+      that.completeComponent();
+      that.bindEvent();
+    });
   },
   /**
    * 初始化数据.
    */
-  initData: function() {
+  initData: function(next) {
     var that = this;
     window.ic_sms || (window.ic_sms = {});
     window.ic_sms.address = [];
@@ -40,7 +42,6 @@ Main.prototype = {
         delete window.ic_sms.user.password;
         $.post("/user/selectByExample", window.ic_sms.user, function(res) {
           window.ic_sms.user = res.data[0];
-          that.page_vue.$data.name = window.ic_sms.user.name;
           callback(null);
         });
       },
@@ -52,9 +53,22 @@ Main.prototype = {
           });
           callback(null);
         });
+      },
+      (callback)=> {
+        $.post("/authority/selectByExample", function(res) {
+          ic_sms.auths = res.data || [];
+          callback(null);
+        });
+      },
+      (callback)=> {
+        $.post("/accessControl/selectByExample", function(res) {
+          ic_sms.user.accessControl = res.data || [];
+          callback(null);
+        });
       }
     ], (err)=>{
       $.ic.loadUI.hide();
+      next(err);
     });
   },
   /**
@@ -68,41 +82,55 @@ Main.prototype = {
    */
   initComponent: function () {
     var that = this;
+    var menuList = [
+      {title: "业务管理", type: "01", subMenu: [
+        {title: "电话拓展管理", type: "02", link: "/html/customer.html"},
+        {title: "合同管理", type: "02", link: "/html/contract.html"},
+        {title: "客户采购系统管理", type: "02", link: "/html/customerBSM.html"},
+      ]},
+      {title: "日常事务", type: "01", subMenu: [
+        {title: "出差拜访管理", type: "02", link: "/html/BusinessTravel.html"},
+        {title: "客户来访管理", type: "02", link: "/html/CustomerVisit.html"},
+        {title: "会议交流管理", type: "02", link: "/html/MeetingExchange.html"},
+      ]},
+      {title: "系统设置", type: "01", subMenu: [
+        {title: "权限管理", type: "02", link: "/html/authority.html"},
+        {title: "用户管理", type: "02", link: "/html/user.html"},
+        {title: "枚举管理", type: "02", link: "/html/enum.html"},
+      ]}
+    ];
+    var curRoleMenu = ic_sms.auths.filter((item)=> {
+      return item.machine == "0001" && item.roles.indexOf(ic_sms.user.rid) > -1
+    }).map((item)=> {
+      return item.keyword;
+    });
+    var fun = function(arr1, arr2) {
+      arr1.forEach((it)=> {
+        if (arr2.indexOf(it.title) == -1) {
+          it.hidden = true;
+        }
+        if (it.subMenu) {
+          fun(it.subMenu, arr2);
+        }
+      });
+    }
+    fun(menuList, curRoleMenu);
     window.$navMenu = $("#nav-menu").navList({
       default: [1],
-      data: [
-        {title: "业务管理", subMenu: [
-          {title: "电话拓展管理", link: "/html/customer.html"},
-          {title: "合同管理", link: "/html/contract.html"},
-          {title: "客户采购系统管理", link: "/html/customerBSM.html"},
-        ]},
-        {title: "日常事务", subMenu: [
-          {title: "出差拜访管理", link: "/html/BusinessTravel.html"},
-          {title: "客户来访管理", link: "/html/CustomerVisit.html"},
-          {title: "会议交流管理", link: "/html/MeetingExchange.html"},
-        ]},
-        {title: "系统设置", subMenu: [
-          {title: "权限管理", link: "/html/authority.html"},
-          {title: "用户管理", link: "/html/user.html"},
-          {title: "枚举管理", link: "/html/enum.html"},
-        ]}
-      ]
+      data: menuList
     });
-    that.delDialogComponent = that.getDelDialog();
   },
   /**
-   * 获取删除对话框.
+   * 获取退出对话框.
    */
-  getDelDialog: function () {
+  getQuitDialog: function () {
     return new Dialog({
-      title: "删除",
-      body: `是否删除【{{rowData.name}}】?`,
-      data: {
-        rowData: { name: "" }
-      },
+      title: "退出",
+      width: "320px",
+      body: `是否退出系统?`,
       buttons: [
         {
-          name: "关闭",
+          name: "取消",
           event: function () {
             this.hide();
           }
@@ -112,14 +140,7 @@ Main.prototype = {
           type: "primary",
           event: function () {
             var that = this;
-            $.post("/enum/deleteByPrimaryKey", that._vue.$data.rowData, function (data, status, xhr) {
-              if (data.data > 0) {
-                alert("删除成功");
-                that.hide();
-              } else {
-                alert("删除失败");
-              }
-            });
+            window.location.href = "/"
           }
         }
       ]
@@ -133,9 +154,12 @@ Main.prototype = {
     that.page_vue = new Vue({
       el: ".app-container",
       data: {
-        name: ""
+        name: ic_sms.user.name || ""
       },
       methods: {
+        quitEvent: function() {
+          that.getQuitDialog().show();
+        },
         navMenuClickHendle: function(e) {
           var link = $(e.target).attr("link");
           if (link && that.oldLink != link) {

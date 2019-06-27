@@ -474,73 +474,73 @@ public class IcSmsAccessControlExample {
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeIsNull() {
-            addCriterion("usercode is null");
+        public Criteria andUsernameIsNull() {
+            addCriterion("username is null");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeIsNotNull() {
-            addCriterion("usercode is not null");
+        public Criteria andUsernameIsNotNull() {
+            addCriterion("username is not null");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeEqualTo(String value) {
-            addCriterion("usercode =", value, "usercode");
+        public Criteria andUsernameEqualTo(String value) {
+            addCriterion("username =", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeNotEqualTo(String value) {
-            addCriterion("usercode <>", value, "usercode");
+        public Criteria andUsernameNotEqualTo(String value) {
+            addCriterion("username <>", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeGreaterThan(String value) {
-            addCriterion("usercode >", value, "usercode");
+        public Criteria andUsernameGreaterThan(String value) {
+            addCriterion("username >", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeGreaterThanOrEqualTo(String value) {
-            addCriterion("usercode >=", value, "usercode");
+        public Criteria andUsernameGreaterThanOrEqualTo(String value) {
+            addCriterion("username >=", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeLessThan(String value) {
-            addCriterion("usercode <", value, "usercode");
+        public Criteria andUsernameLessThan(String value) {
+            addCriterion("username <", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeLessThanOrEqualTo(String value) {
-            addCriterion("usercode <=", value, "usercode");
+        public Criteria andUsernameLessThanOrEqualTo(String value) {
+            addCriterion("username <=", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeLike(String value) {
-            addCriterion("usercode like", value, "usercode");
+        public Criteria andUsernameLike(String value) {
+            addCriterion("username like", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeNotLike(String value) {
-            addCriterion("usercode not like", value, "usercode");
+        public Criteria andUsernameNotLike(String value) {
+            addCriterion("username not like", value, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeIn(List<String> values) {
-            addCriterion("usercode in", values, "usercode");
+        public Criteria andUsernameIn(List<String> values) {
+            addCriterion("username in", values, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeNotIn(List<String> values) {
-            addCriterion("usercode not in", values, "usercode");
+        public Criteria andUsernameNotIn(List<String> values) {
+            addCriterion("username not in", values, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeBetween(String value1, String value2) {
-            addCriterion("usercode between", value1, value2, "usercode");
+        public Criteria andUsernameBetween(String value1, String value2) {
+            addCriterion("username between", value1, value2, "username");
             return (Criteria) this;
         }
 
-        public Criteria andUsercodeNotBetween(String value1, String value2) {
-            addCriterion("usercode not between", value1, value2, "usercode");
+        public Criteria andUsernameNotBetween(String value1, String value2) {
+            addCriterion("username not between", value1, value2, "username");
             return (Criteria) this;
         }
 

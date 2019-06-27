@@ -170,6 +170,16 @@ Contract.prototype = {
    */
   completeComponent: function() {
     var that = this;
+    var $tableTH = $("#CT_Table").children();
+    this.titles = [];
+    this.fields = [];
+    $.each($tableTH, function (ind, row) {
+      if($(row).attr("label")=="操作"){
+        return
+      }
+      that.titles.push($(row).attr("label"))
+      that.fields.push($(row).attr("prop"));
+    })
     that.page_vue = new Vue({
       el: "#main_app",
       data: {
@@ -220,6 +230,13 @@ Contract.prototype = {
             default:
               return cellValue;
           }
+        },
+        exportTable: () => {
+          var searchForm=that.page_vue.$data.search_form;
+          var cloneObj = Util.clone(searchForm);
+          cloneObj.customerName = cloneObj.customerName ? `%${cloneObj.customerName}%` : '';
+          cloneObj.name = cloneObj.name ? `%${cloneObj.name}%` : '';
+          exportTable("contract",cloneObj,this.titles,this.fields,"合同管理");
         }
       },
     })

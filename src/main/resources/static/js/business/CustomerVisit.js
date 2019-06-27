@@ -179,6 +179,16 @@ CustomerVisit.prototype = {
     },
     completeComponent: function () {
         var that = this;
+        var $tableTH = $("#CV_table").children();
+        this.titles = [];
+        this.fields = [];
+        $.each($tableTH, function (ind, row) {
+            if($(row).attr("label")=="操作"){
+                return
+            }
+            that.titles.push($(row).attr("label"))
+            that.fields.push($(row).attr("prop"));
+        });
         that.mainTable = new Vue({
             el: "#CustomerVisit",
             data: {
@@ -231,9 +241,9 @@ CustomerVisit.prototype = {
                 addBtnEvent: () => {
                     that.addDialogComponent.show();
                 },
-                editBtnEvent:(index, row)=>{
+                editBtnEvent: (index, row) => {
                     that.editDialogComponent._vue.$data.form = Util.clone(row);
-                    that.editDialogComponent._vue.$data.form.cUser=that.editDialogComponent._vue.$data.form.cuser;
+                    that.editDialogComponent._vue.$data.form.cUser = that.editDialogComponent._vue.$data.form.cuser;
                     that.editDialogComponent.show();
                 },
                 delBtnEvent: (index, row) => {
@@ -243,6 +253,13 @@ CustomerVisit.prototype = {
                 search() {
                     that.loadTable();
                 },
+                exportTable: () => {
+                    var searchForm=that.page_vue.$data.search_form;
+                    var cloneObj = Util.clone(searchForm);
+                    cloneObj.visitUnit = cloneObj.visitUnit ? `%${cloneObj.visitUnit}%` : '';
+                    exportTable("comeVisit",searchForm,this.titles,this.fields,"客户来访管理");
+                }
+
             },
         })
     },

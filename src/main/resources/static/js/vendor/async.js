@@ -4219,7 +4219,7 @@
    *     });
    * };
    *
-   * // generate 5 users
+   * // customMapper 5 users
    * async.times(5, function(n, next) {
    *     createUser(n, function(err, user) {
    *         next(err, user);

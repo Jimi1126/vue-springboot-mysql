@@ -12,7 +12,7 @@
       <el-col :span="12" style="text-align:left;">联系人</el-col>
       <el-col :span="12" style="text-align: right;">
         <el-button @click="addBtnEvent">新增</el-button>
-        <el-button>导出</el-button>
+        <el-button @click="exportTable">导出</el-button>
         <el-button @click="importBtnEvt">导入</el-button>
       </el-col>
     </el-row>
@@ -86,7 +86,7 @@
 
   <div style="width: 100%; height: 6px; border-bottom: 1px #000 solid"></div>
 
-  <el-table :data="customList.slice((currentPage-1)*pagesize,currentPage*pagesize)" border height="440" stripe @cell-click="cellClickEvent" style="width: 100%;">
+  <el-table :data="customList" border height="440" stripe @cell-click="cellClickEvent" style="width: 100%;" id="CS_Table">
     <el-table-column prop="regDate" label="登记日期" :show-overflow-tooltip="tooltip" width="100"></el-table-column>
     <el-table-column prop="name" label="客户名称" class-name="customer" label-class-name="customer-title" :show-overflow-tooltip="tooltip" :formatter="displayFormat"></el-table-column>
     <el-table-column prop="city" label="城市" :show-overflow-tooltip="tooltip" :formatter="displayFormat"></el-table-column>
@@ -110,7 +110,7 @@
     :current-page="currentPage"
     :page-sizes="[5, 10, 20, 40]"
     :page-size="pagesize"
-    layout="total, sizes, prev, pager, next, jumper" :total="customList.length">
+    layout="total, sizes, prev, pager, next, jumper" :total="customTotal">
   </el-pagination>
 </div>
 

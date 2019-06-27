@@ -29,6 +29,7 @@
 
 # svn
 .svn
+.git/
 
 # other #
 log/

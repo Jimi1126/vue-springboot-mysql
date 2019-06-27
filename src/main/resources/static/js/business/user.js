@@ -44,7 +44,7 @@ User.prototype = {
     var that = this;
     return new Dialog({
       title: flag ? "修改" : "新增",
-      width: "30%",
+      width: "450px",
       body: 
       `<el-form ref="form" label-width="90px">
         <el-form-item label="工号：">
@@ -54,20 +54,21 @@ User.prototype = {
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item label="密码：">
-          <el-input v-model="form.password"></el-input>
+          <el-input v-model="form.password" type="password" style="width:210px"></el-input>
+          <el-button @click="showPwdEvent">查看密码</el-button>
         </el-form-item>
         <el-form-item label="角色：">
-          <el-select solt="prepend" v-model="form.rid">
+          <el-select solt="prepend" v-model="form.rid" style="width:100%">
             <el-option v-for="item in roles" :label="item.name" :value=item.code></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="职位：">
-          <el-select solt="prepend" v-model="form.pid">
+          <el-select solt="prepend" v-model="form.pid" style="width:100%">
             <el-option v-for="item in positions" :label="item.name" :value=item.code></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="状态：">
-          <el-select solt="prepend" v-model="form.status">
+          <el-select solt="prepend" v-model="form.status" style="width:100%">
             <el-option v-for="item in statuss" :label="item.name" :value=item.code></el-option>
           </el-select>
         </el-form-item>
@@ -77,6 +78,22 @@ User.prototype = {
         positions: ic_sms.enum["职位"],
         statuss: ic_sms.enum["员工状态"],
         form: that.newform()
+      },
+      methods: {
+        showPwdEvent: function() {
+          var showPwdRoles = "";
+          var auths = ic_sms.auths.filter((it)=> {
+            return it.machine == "0002" && it.keyword == "showPwd"
+          }).forEach((it)=> {
+            showPwdRoles += it.roles;
+          });
+          if (showPwdRoles.indexOf(ic_sms.user.rid) == -1) {
+            return alert("没有权限");
+          }
+          $.post("/pwd/selectByExample", {rid: this._vue.$data.form.gid}, function(response) {
+            alert(response.data[0] && (response.data[0].pwd || ""));
+          })
+        }
       },
       buttons: [
         {

@@ -215,6 +215,16 @@ BusinessTravel.prototype = {
     },
     completeComponent: function () {
         var that = this;
+        var $tableTH = $("#BT_table").children();
+        this.titles = [];
+        this.fields = [];
+        $.each($tableTH, function (ind, row) {
+            if($(row).attr("label")=="操作"){
+                return
+            }
+            that.titles.push($(row).attr("label"))
+            that.fields.push($(row).attr("prop"));
+        });
         that.mainTable = new Vue({
             el: "#BusinessTravel",
             data: {
@@ -313,7 +323,12 @@ BusinessTravel.prototype = {
                         that.mainTable.$data.search_form.city = "";
                     }
                 },
-
+                exportTable:()=>{
+                    var searchForm=that.page_vue.$data.search_form;
+                    var cloneObj = Util.clone(searchForm);
+                    cloneObj.visitUnit = cloneObj.visitUnit ? `%${cloneObj.visitUnit}%` : '';
+                    exportTable("businessVisit",searchForm,this.titles,this.fields,"出差拜访管理");
+                }
 
             },
         })
