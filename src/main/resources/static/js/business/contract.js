@@ -1,6 +1,7 @@
 var Contract = function() {}
 
 Contract.prototype = {
+  name: "contract",
   /**
    * 构造组件动作.
    */
@@ -28,6 +29,8 @@ Contract.prototype = {
     return {
       gid: Util.uuid(32, 52),
       customerName: "",
+      enName: '',
+      projCode: '',
       name: '',
       trade:'',
       type:'',
@@ -50,6 +53,12 @@ Contract.prototype = {
       `<el-form ref="form" label-width="90px">
         <el-form-item label="客户名称：">
           <el-input v-model="form.customerName"></el-input>
+        </el-form-item>
+        <el-form-item label="英文缩写：">
+          <el-input v-model="form.enName"></el-input>
+        </el-form-item>
+        <el-form-item label="项目编码：">
+          <el-input v-model="form.projCode"></el-input>
         </el-form-item>
         <el-form-item label="合同名称：">
           <el-input v-model="form.name"></el-input>
@@ -83,12 +92,12 @@ Contract.prototype = {
             <el-option v-for="item in types" :label="item.name" :value=item.code></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="时 效：">
+        <!-- <el-form-item label="时 效：">
           <el-input type="textarea" v-model="form.returnTime"></el-input>
         </el-form-item>
         <el-form-item label="质 量：">
           <el-input type="textarea" v-model="form.quality"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="备 注：">
           <el-input type="textarea" v-model="form.remark"></el-input>
         </el-form-item>
@@ -198,23 +207,25 @@ Contract.prototype = {
         }
       },
       methods: {
-        addBtnEvent: () => {
+        addBtnEvent: $.getRole( that.name, "addBtn", () => {
           that.addDialogComponent.show();
-        },
-        findBtnEvent: ()=> {
+        }),
+        findBtnEvent: $.getRole( that.name, "findBtn", () => {
           that.loadTable();
-        },
-        editBtnEvent: (index, row) => {
+        }),
+        editBtnEvent: $.getRole( that.name, "editBtn", (index, row) => {
           that.editDialogComponent._vue.$data.form = Util.clone(row);
           that.editDialogComponent.show();
-        },
-        delBtnEvent: (index, row) => {
+        }),
+        delBtnEvent: $.getRole( that.name, "delBtn", (index, row) => {
           that.delDialogComponent._vue.$data.rowData = row;
           that.delDialogComponent.show();
-        },
+        }),
         displayFormat: function (row, column, cellValue, index) {
           var obj;
           switch (column.property) {
+            case "name":
+              return "******";
             case "trade":
               obj = ic_sms.enum["行业"].filter((item) => { return item.code == cellValue })[0] || {};
               return (obj && obj.name) || cellValue;
@@ -231,13 +242,19 @@ Contract.prototype = {
               return cellValue;
           }
         },
-        exportTable: () => {
+        exportTable: $.getRole( that.name, "export", () => {
           var searchForm=that.page_vue.$data.search_form;
           var cloneObj = Util.clone(searchForm);
           cloneObj.customerName = cloneObj.customerName ? `%${cloneObj.customerName}%` : '';
           cloneObj.name = cloneObj.name ? `%${cloneObj.name}%` : '';
-          exportTable("contract",cloneObj,this.titles,this.fields,"合同管理");
-        }
+          n_e_map = {
+            "trade": "行业",
+            "cooperationType": "合作类型",
+            "status": "合作状态",
+            "type": "合同类型"
+          }
+          exportTable("contract",cloneObj,this.titles,this.fields,"合同管理", n_e_map);
+        })
       },
     })
   },

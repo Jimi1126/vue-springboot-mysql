@@ -1,6 +1,7 @@
 var Enum = function () { }
 
 Enum.prototype = {
+  name: "enum",
   /**
    * 构造组件动作.
    */
@@ -137,20 +138,20 @@ Enum.prototype = {
         }
       },
       methods: {
-        addBtnEvent: () => {
+        addBtnEvent: $.getRole( that.name, "addBtn", () => {
           that.addDialogComponent.show();
-        },
-        findBtnEvent: () => {
+        }),
+        findBtnEvent: $.getRole( that.name, "findBtn", () => {
           that.loadTable();
-        },
-        editBtnEvent: (index, row) => {
+        }),
+        editBtnEvent: $.getRole( that.name, "editBtn", (index, row) => {
           that.editDialogComponent._vue.$data.form = Util.clone(row);
           that.editDialogComponent.show();
-        },
-        delBtnEvent: (index, row) => {
+        }),
+        delBtnEvent: $.getRole( that.name, "delBtn", (index, row) => {
           that.delDialogComponent._vue.$data.rowData = row;
           that.delDialogComponent.show();
-        }
+        })
       },
     })
   },

@@ -2,10 +2,19 @@ package com.iconfluence.sms.mapper;
 
 import com.iconfluence.sms.model.IcSmsCustomerContact;
 import com.iconfluence.sms.model.IcSmsCustomerContactExample;
-import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.type.JdbcType;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Arg;
+import org.apache.ibatis.annotations.ConstructorArgs;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.DeleteProvider;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.type.JdbcType;
 
 public interface IcSmsCustomerContactMapper extends BaseMapper<IcSmsCustomerContact, IcSmsCustomerContactExample> {
     /**
@@ -34,7 +43,7 @@ public interface IcSmsCustomerContactMapper extends BaseMapper<IcSmsCustomerCont
      */
     @Delete({
         "delete from ic_sms_customer_contact",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     int deleteByPrimaryKey(String gid);
 
@@ -45,22 +54,26 @@ public interface IcSmsCustomerContactMapper extends BaseMapper<IcSmsCustomerCont
      * @mbg.generated
      */
     @Insert({
-        "insert into ic_sms_customer_contact (gid, cid, ",
-        "name, department, ",
-        "phone, mobile, qq, ",
-        "msn, icq, email, ",
-        "is_important, remark, ",
-        "create_time, fax, ",
-        "area_code, extension, ",
-        "sex)",
+        "insert into ic_sms_customer_contact (GID, CID, ",
+        "NAME, SEX, DEPARTMENT, ",
+        "POSITION, QUHAO, ",
+        "PHONE, EXTENSION, ",
+        "MOBILE, QQ, MSN, ",
+        "ICQ, EMAIL, IS_IMPORTANT, ",
+        "REMARK, CREATE_TIME, ",
+        "FAX, AREA_CODE, AREA, ",
+        "MAIN_CONTACT, GRADE, ",
+        "LAST_TIME)",
         "values (#{gid,jdbcType=VARCHAR}, #{cid,jdbcType=VARCHAR}, ",
-        "#{name,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, ",
-        "#{phone,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, ",
-        "#{msn,jdbcType=VARCHAR}, #{icq,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, ",
-        "#{isImportant,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, ",
-        "#{createTime,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, ",
-        "#{areaCode,jdbcType=VARCHAR}, #{extension,jdbcType=VARCHAR}, ",
-        "#{sex,jdbcType=BINARY})"
+        "#{name,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{department,jdbcType=VARCHAR}, ",
+        "#{position,jdbcType=VARCHAR}, #{quhao,jdbcType=VARCHAR}, ",
+        "#{phone,jdbcType=VARCHAR}, #{extension,jdbcType=VARCHAR}, ",
+        "#{mobile,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, #{msn,jdbcType=VARCHAR}, ",
+        "#{icq,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{isImportant,jdbcType=VARCHAR}, ",
+        "#{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, ",
+        "#{fax,jdbcType=VARCHAR}, #{areaCode,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, ",
+        "#{mainContact,jdbcType=INTEGER}, #{grade,jdbcType=VARCHAR}, ",
+        "#{lastTime,jdbcType=VARCHAR})"
     })
     int insert(IcSmsCustomerContact record);
 
@@ -79,52 +92,31 @@ public interface IcSmsCustomerContactMapper extends BaseMapper<IcSmsCustomerCont
      *
      * @mbg.generated
      */
-    @SelectProvider(type=IcSmsCustomerContactSqlProvider.class, method="selectByExampleWithBLOBs")
-    @ConstructorArgs({
-        @Arg(column="gid", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
-        @Arg(column="cid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="department", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="phone", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="mobile", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="qq", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="msn", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="icq", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="email", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="is_important", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="remark", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="create_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="fax", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="area_code", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="extension", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="sex", javaType=byte[].class, jdbcType=JdbcType.BINARY)
-    })
-    List<IcSmsCustomerContact> selectByExampleWithBLOBs(IcSmsCustomerContactExample example);
-
-    /**
-     * This method was generated by MyBatis Generator.
-     * This method corresponds to the database table ic_sms_customer_contact
-     *
-     * @mbg.generated
-     */
     @SelectProvider(type=IcSmsCustomerContactSqlProvider.class, method="selectByExample")
     @ConstructorArgs({
-        @Arg(column="gid", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
-        @Arg(column="cid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="department", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="phone", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="mobile", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="qq", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="msn", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="icq", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="email", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="is_important", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="remark", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="create_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="fax", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="area_code", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="extension", javaType=String.class, jdbcType=JdbcType.VARCHAR)
+        @Arg(column="GID", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
+        @Arg(column="CID", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="NAME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="SEX", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
+        @Arg(column="DEPARTMENT", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="POSITION", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="QUHAO", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="PHONE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="EXTENSION", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="MOBILE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="QQ", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="MSN", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="ICQ", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="EMAIL", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="IS_IMPORTANT", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="REMARK", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="CREATE_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="FAX", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="AREA_CODE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="AREA", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="MAIN_CONTACT", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
+        @Arg(column="GRADE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="LAST_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR)
     })
     List<IcSmsCustomerContact> selectByExample(IcSmsCustomerContactExample example);
 
@@ -136,29 +128,36 @@ public interface IcSmsCustomerContactMapper extends BaseMapper<IcSmsCustomerCont
      */
     @Select({
         "select",
-        "gid, cid, name, department, phone, mobile, qq, msn, icq, email, is_important, ",
-        "remark, create_time, fax, area_code, extension, sex",
+        "GID, CID, NAME, SEX, DEPARTMENT, POSITION, QUHAO, PHONE, EXTENSION, MOBILE, ",
+        "QQ, MSN, ICQ, EMAIL, IS_IMPORTANT, REMARK, CREATE_TIME, FAX, AREA_CODE, AREA, ",
+        "MAIN_CONTACT, GRADE, LAST_TIME",
         "from ic_sms_customer_contact",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     @ConstructorArgs({
-        @Arg(column="gid", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
-        @Arg(column="cid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="department", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="phone", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="mobile", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="qq", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="msn", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="icq", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="email", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="is_important", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="remark", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="create_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="fax", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="area_code", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="extension", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="sex", javaType=byte[].class, jdbcType=JdbcType.BINARY)
+        @Arg(column="GID", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
+        @Arg(column="CID", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="NAME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="SEX", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
+        @Arg(column="DEPARTMENT", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="POSITION", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="QUHAO", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="PHONE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="EXTENSION", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="MOBILE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="QQ", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="MSN", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="ICQ", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="EMAIL", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="IS_IMPORTANT", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="REMARK", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="CREATE_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="FAX", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="AREA_CODE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="AREA", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="MAIN_CONTACT", javaType=Integer.class, jdbcType=JdbcType.INTEGER),
+        @Arg(column="GRADE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="LAST_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR)
     })
     IcSmsCustomerContact selectByPrimaryKey(String gid);
 
@@ -170,15 +169,6 @@ public interface IcSmsCustomerContactMapper extends BaseMapper<IcSmsCustomerCont
      */
     @UpdateProvider(type=IcSmsCustomerContactSqlProvider.class, method="updateByExampleSelective")
     int updateByExampleSelective(@Param("record") IcSmsCustomerContact record, @Param("example") IcSmsCustomerContactExample example);
-
-    /**
-     * This method was generated by MyBatis Generator.
-     * This method corresponds to the database table ic_sms_customer_contact
-     *
-     * @mbg.generated
-     */
-    @UpdateProvider(type=IcSmsCustomerContactSqlProvider.class, method="updateByExampleWithBLOBs")
-    int updateByExampleWithBLOBs(@Param("record") IcSmsCustomerContact record, @Param("example") IcSmsCustomerContactExample example);
 
     /**
      * This method was generated by MyBatis Generator.
@@ -206,50 +196,29 @@ public interface IcSmsCustomerContactMapper extends BaseMapper<IcSmsCustomerCont
      */
     @Update({
         "update ic_sms_customer_contact",
-        "set cid = #{cid,jdbcType=VARCHAR},",
-          "name = #{name,jdbcType=VARCHAR},",
-          "department = #{department,jdbcType=VARCHAR},",
-          "phone = #{phone,jdbcType=VARCHAR},",
-          "mobile = #{mobile,jdbcType=VARCHAR},",
-          "qq = #{qq,jdbcType=VARCHAR},",
-          "msn = #{msn,jdbcType=VARCHAR},",
-          "icq = #{icq,jdbcType=VARCHAR},",
-          "email = #{email,jdbcType=VARCHAR},",
-          "is_important = #{isImportant,jdbcType=VARCHAR},",
-          "remark = #{remark,jdbcType=VARCHAR},",
-          "create_time = #{createTime,jdbcType=VARCHAR},",
-          "fax = #{fax,jdbcType=VARCHAR},",
-          "area_code = #{areaCode,jdbcType=VARCHAR},",
-          "extension = #{extension,jdbcType=VARCHAR},",
-          "sex = #{sex,jdbcType=BINARY}",
-        "where gid = #{gid,jdbcType=VARCHAR}"
-    })
-    int updateByPrimaryKeyWithBLOBs(IcSmsCustomerContact record);
-
-    /**
-     * This method was generated by MyBatis Generator.
-     * This method corresponds to the database table ic_sms_customer_contact
-     *
-     * @mbg.generated
-     */
-    @Update({
-        "update ic_sms_customer_contact",
-        "set cid = #{cid,jdbcType=VARCHAR},",
-          "name = #{name,jdbcType=VARCHAR},",
-          "department = #{department,jdbcType=VARCHAR},",
-          "phone = #{phone,jdbcType=VARCHAR},",
-          "mobile = #{mobile,jdbcType=VARCHAR},",
-          "qq = #{qq,jdbcType=VARCHAR},",
-          "msn = #{msn,jdbcType=VARCHAR},",
-          "icq = #{icq,jdbcType=VARCHAR},",
-          "email = #{email,jdbcType=VARCHAR},",
-          "is_important = #{isImportant,jdbcType=VARCHAR},",
-          "remark = #{remark,jdbcType=VARCHAR},",
-          "create_time = #{createTime,jdbcType=VARCHAR},",
-          "fax = #{fax,jdbcType=VARCHAR},",
-          "area_code = #{areaCode,jdbcType=VARCHAR},",
-          "extension = #{extension,jdbcType=VARCHAR}",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "set CID = #{cid,jdbcType=VARCHAR},",
+          "NAME = #{name,jdbcType=VARCHAR},",
+          "SEX = #{sex,jdbcType=INTEGER},",
+          "DEPARTMENT = #{department,jdbcType=VARCHAR},",
+          "POSITION = #{position,jdbcType=VARCHAR},",
+          "QUHAO = #{quhao,jdbcType=VARCHAR},",
+          "PHONE = #{phone,jdbcType=VARCHAR},",
+          "EXTENSION = #{extension,jdbcType=VARCHAR},",
+          "MOBILE = #{mobile,jdbcType=VARCHAR},",
+          "QQ = #{qq,jdbcType=VARCHAR},",
+          "MSN = #{msn,jdbcType=VARCHAR},",
+          "ICQ = #{icq,jdbcType=VARCHAR},",
+          "EMAIL = #{email,jdbcType=VARCHAR},",
+          "IS_IMPORTANT = #{isImportant,jdbcType=VARCHAR},",
+          "REMARK = #{remark,jdbcType=VARCHAR},",
+          "CREATE_TIME = #{createTime,jdbcType=VARCHAR},",
+          "FAX = #{fax,jdbcType=VARCHAR},",
+          "AREA_CODE = #{areaCode,jdbcType=VARCHAR},",
+          "AREA = #{area,jdbcType=VARCHAR},",
+          "MAIN_CONTACT = #{mainContact,jdbcType=INTEGER},",
+          "GRADE = #{grade,jdbcType=VARCHAR},",
+          "LAST_TIME = #{lastTime,jdbcType=VARCHAR}",
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(IcSmsCustomerContact record);
 }

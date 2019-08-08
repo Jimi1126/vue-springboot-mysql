@@ -36,7 +36,7 @@
         <el-col :span="8">
           <el-form-item label="业务员:">
             <el-select solt="prepend" v-model="search_form.uid" clearable>
-              <el-option v-for="item in trades" :label="item.name" :value=item.code></el-option>
+              <el-option v-for="item in users" :label="item.name" :value=item.gid></el-option>
             </el-select>
           </el-form-item>
         </el-col>

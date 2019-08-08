@@ -1,13 +1,12 @@
 package com.iconfluence.sms.mapper;
 
 import com.iconfluence.sms.model.IcSmsContract;
-import com.iconfluence.sms.model.IcSmsContractExample;
 import com.iconfluence.sms.model.IcSmsContractExample.Criteria;
 import com.iconfluence.sms.model.IcSmsContractExample.Criterion;
-import org.apache.ibatis.jdbc.SQL;
-
+import com.iconfluence.sms.model.IcSmsContractExample;
 import java.util.List;
 import java.util.Map;
+import org.apache.ibatis.jdbc.SQL;
 
 public class IcSmsContractSqlProvider {
 
@@ -48,59 +47,67 @@ public class IcSmsContractSqlProvider {
         sql.INSERT_INTO("ic_sms_contract");
         
         if (record.getGid() != null) {
-            sql.VALUES("gid", "#{gid,jdbcType=VARCHAR}");
+            sql.VALUES("GID", "#{gid,jdbcType=VARCHAR}");
         }
         
         if (record.getCustomerName() != null) {
-            sql.VALUES("customer_name", "#{customerName,jdbcType=VARCHAR}");
+            sql.VALUES("CUSTOMER_NAME", "#{customerName,jdbcType=VARCHAR}");
         }
         
         if (record.getName() != null) {
-            sql.VALUES("name", "#{name,jdbcType=VARCHAR}");
+            sql.VALUES("NAME", "#{name,jdbcType=VARCHAR}");
         }
         
         if (record.getType() != null) {
-            sql.VALUES("type", "#{type,jdbcType=VARCHAR}");
+            sql.VALUES("TYPE", "#{type,jdbcType=VARCHAR}");
         }
         
         if (record.getTrade() != null) {
-            sql.VALUES("trade", "#{trade,jdbcType=VARCHAR}");
+            sql.VALUES("TRADE", "#{trade,jdbcType=VARCHAR}");
         }
         
         if (record.getTerm() != null) {
-            sql.VALUES("term", "#{term,jdbcType=VARCHAR}");
+            sql.VALUES("TERM", "#{term,jdbcType=VARCHAR}");
         }
         
         if (record.getContractTime() != null) {
-            sql.VALUES("contract_time", "#{contractTime,jdbcType=VARCHAR}");
+            sql.VALUES("CONTRACT_TIME", "#{contractTime,jdbcType=VARCHAR}");
         }
         
         if (record.getOverTime() != null) {
-            sql.VALUES("over_time", "#{overTime,jdbcType=VARCHAR}");
+            sql.VALUES("OVER_TIME", "#{overTime,jdbcType=VARCHAR}");
         }
         
         if (record.getStatus() != null) {
-            sql.VALUES("status", "#{status,jdbcType=VARCHAR}");
+            sql.VALUES("STATUS", "#{status,jdbcType=VARCHAR}");
         }
         
         if (record.getCooperationType() != null) {
-            sql.VALUES("cooperation_type", "#{cooperationType,jdbcType=VARCHAR}");
+            sql.VALUES("COOPERATION_TYPE", "#{cooperationType,jdbcType=VARCHAR}");
         }
         
         if (record.getReturnTime() != null) {
-            sql.VALUES("return_time", "#{returnTime,jdbcType=VARCHAR}");
+            sql.VALUES("RETURN_TIME", "#{returnTime,jdbcType=VARCHAR}");
         }
         
         if (record.getQuality() != null) {
-            sql.VALUES("quality", "#{quality,jdbcType=VARCHAR}");
+            sql.VALUES("QUALITY", "#{quality,jdbcType=VARCHAR}");
         }
         
         if (record.getRemark() != null) {
-            sql.VALUES("remark", "#{remark,jdbcType=VARCHAR}");
+            sql.VALUES("REMARK", "#{remark,jdbcType=VARCHAR}");
         }
         
         if (record.getUid() != null) {
-            sql.VALUES("uid", "#{uid,jdbcType=VARCHAR}");
+            sql.VALUES("UID", "#{uid,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getProjCode() != null) {
+            sql.VALUES("PROJ_CODE", "#{projCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getEnName() != null) {
+            sql.VALUES("EN_NAME", "#{enName,jdbcType=VARCHAR}");
         }
         
         return sql.toString();
@@ -115,23 +122,25 @@ public class IcSmsContractSqlProvider {
     public String selectByExample(IcSmsContractExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
-            sql.SELECT_DISTINCT("gid");
+            sql.SELECT_DISTINCT("GID");
         } else {
-            sql.SELECT("gid");
+            sql.SELECT("GID");
         }
-        sql.SELECT("customer_name");
-        sql.SELECT("name");
-        sql.SELECT("type");
-        sql.SELECT("trade");
-        sql.SELECT("term");
-        sql.SELECT("contract_time");
-        sql.SELECT("over_time");
-        sql.SELECT("status");
-        sql.SELECT("cooperation_type");
-        sql.SELECT("return_time");
-        sql.SELECT("quality");
-        sql.SELECT("remark");
-        sql.SELECT("uid");
+        sql.SELECT("CUSTOMER_NAME");
+        sql.SELECT("NAME");
+        sql.SELECT("TYPE");
+        sql.SELECT("TRADE");
+        sql.SELECT("TERM");
+        sql.SELECT("CONTRACT_TIME");
+        sql.SELECT("OVER_TIME");
+        sql.SELECT("STATUS");
+        sql.SELECT("COOPERATION_TYPE");
+        sql.SELECT("RETURN_TIME");
+        sql.SELECT("QUALITY");
+        sql.SELECT("REMARK");
+        sql.SELECT("UID");
+        sql.SELECT("PROJ_CODE");
+        sql.SELECT("EN_NAME");
         sql.FROM("ic_sms_contract");
         applyWhere(sql, example, false);
         
@@ -156,59 +165,67 @@ public class IcSmsContractSqlProvider {
         sql.UPDATE("ic_sms_contract");
         
         if (record.getGid() != null) {
-            sql.SET("gid = #{record.gid,jdbcType=VARCHAR}");
+            sql.SET("GID = #{record.gid,jdbcType=VARCHAR}");
         }
         
         if (record.getCustomerName() != null) {
-            sql.SET("customer_name = #{record.customerName,jdbcType=VARCHAR}");
+            sql.SET("CUSTOMER_NAME = #{record.customerName,jdbcType=VARCHAR}");
         }
         
         if (record.getName() != null) {
-            sql.SET("name = #{record.name,jdbcType=VARCHAR}");
+            sql.SET("NAME = #{record.name,jdbcType=VARCHAR}");
         }
         
         if (record.getType() != null) {
-            sql.SET("type = #{record.type,jdbcType=VARCHAR}");
+            sql.SET("TYPE = #{record.type,jdbcType=VARCHAR}");
         }
         
         if (record.getTrade() != null) {
-            sql.SET("trade = #{record.trade,jdbcType=VARCHAR}");
+            sql.SET("TRADE = #{record.trade,jdbcType=VARCHAR}");
         }
         
         if (record.getTerm() != null) {
-            sql.SET("term = #{record.term,jdbcType=VARCHAR}");
+            sql.SET("TERM = #{record.term,jdbcType=VARCHAR}");
         }
         
         if (record.getContractTime() != null) {
-            sql.SET("contract_time = #{record.contractTime,jdbcType=VARCHAR}");
+            sql.SET("CONTRACT_TIME = #{record.contractTime,jdbcType=VARCHAR}");
         }
         
         if (record.getOverTime() != null) {
-            sql.SET("over_time = #{record.overTime,jdbcType=VARCHAR}");
+            sql.SET("OVER_TIME = #{record.overTime,jdbcType=VARCHAR}");
         }
         
         if (record.getStatus() != null) {
-            sql.SET("status = #{record.status,jdbcType=VARCHAR}");
+            sql.SET("STATUS = #{record.status,jdbcType=VARCHAR}");
         }
         
         if (record.getCooperationType() != null) {
-            sql.SET("cooperation_type = #{record.cooperationType,jdbcType=VARCHAR}");
+            sql.SET("COOPERATION_TYPE = #{record.cooperationType,jdbcType=VARCHAR}");
         }
         
         if (record.getReturnTime() != null) {
-            sql.SET("return_time = #{record.returnTime,jdbcType=VARCHAR}");
+            sql.SET("RETURN_TIME = #{record.returnTime,jdbcType=VARCHAR}");
         }
         
         if (record.getQuality() != null) {
-            sql.SET("quality = #{record.quality,jdbcType=VARCHAR}");
+            sql.SET("QUALITY = #{record.quality,jdbcType=VARCHAR}");
         }
         
         if (record.getRemark() != null) {
-            sql.SET("remark = #{record.remark,jdbcType=VARCHAR}");
+            sql.SET("REMARK = #{record.remark,jdbcType=VARCHAR}");
         }
         
         if (record.getUid() != null) {
-            sql.SET("uid = #{record.uid,jdbcType=VARCHAR}");
+            sql.SET("UID = #{record.uid,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getProjCode() != null) {
+            sql.SET("PROJ_CODE = #{record.projCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getEnName() != null) {
+            sql.SET("EN_NAME = #{record.enName,jdbcType=VARCHAR}");
         }
         
         applyWhere(sql, example, true);
@@ -225,20 +242,22 @@ public class IcSmsContractSqlProvider {
         SQL sql = new SQL();
         sql.UPDATE("ic_sms_contract");
         
-        sql.SET("gid = #{record.gid,jdbcType=VARCHAR}");
-        sql.SET("customer_name = #{record.customerName,jdbcType=VARCHAR}");
-        sql.SET("name = #{record.name,jdbcType=VARCHAR}");
-        sql.SET("type = #{record.type,jdbcType=VARCHAR}");
-        sql.SET("trade = #{record.trade,jdbcType=VARCHAR}");
-        sql.SET("term = #{record.term,jdbcType=VARCHAR}");
-        sql.SET("contract_time = #{record.contractTime,jdbcType=VARCHAR}");
-        sql.SET("over_time = #{record.overTime,jdbcType=VARCHAR}");
-        sql.SET("status = #{record.status,jdbcType=VARCHAR}");
-        sql.SET("cooperation_type = #{record.cooperationType,jdbcType=VARCHAR}");
-        sql.SET("return_time = #{record.returnTime,jdbcType=VARCHAR}");
-        sql.SET("quality = #{record.quality,jdbcType=VARCHAR}");
-        sql.SET("remark = #{record.remark,jdbcType=VARCHAR}");
-        sql.SET("uid = #{record.uid,jdbcType=VARCHAR}");
+        sql.SET("GID = #{record.gid,jdbcType=VARCHAR}");
+        sql.SET("CUSTOMER_NAME = #{record.customerName,jdbcType=VARCHAR}");
+        sql.SET("NAME = #{record.name,jdbcType=VARCHAR}");
+        sql.SET("TYPE = #{record.type,jdbcType=VARCHAR}");
+        sql.SET("TRADE = #{record.trade,jdbcType=VARCHAR}");
+        sql.SET("TERM = #{record.term,jdbcType=VARCHAR}");
+        sql.SET("CONTRACT_TIME = #{record.contractTime,jdbcType=VARCHAR}");
+        sql.SET("OVER_TIME = #{record.overTime,jdbcType=VARCHAR}");
+        sql.SET("STATUS = #{record.status,jdbcType=VARCHAR}");
+        sql.SET("COOPERATION_TYPE = #{record.cooperationType,jdbcType=VARCHAR}");
+        sql.SET("RETURN_TIME = #{record.returnTime,jdbcType=VARCHAR}");
+        sql.SET("QUALITY = #{record.quality,jdbcType=VARCHAR}");
+        sql.SET("REMARK = #{record.remark,jdbcType=VARCHAR}");
+        sql.SET("UID = #{record.uid,jdbcType=VARCHAR}");
+        sql.SET("PROJ_CODE = #{record.projCode,jdbcType=VARCHAR}");
+        sql.SET("EN_NAME = #{record.enName,jdbcType=VARCHAR}");
         
         IcSmsContractExample example = (IcSmsContractExample) parameter.get("example");
         applyWhere(sql, example, true);
@@ -256,58 +275,66 @@ public class IcSmsContractSqlProvider {
         sql.UPDATE("ic_sms_contract");
         
         if (record.getCustomerName() != null) {
-            sql.SET("customer_name = #{customerName,jdbcType=VARCHAR}");
+            sql.SET("CUSTOMER_NAME = #{customerName,jdbcType=VARCHAR}");
         }
         
         if (record.getName() != null) {
-            sql.SET("name = #{name,jdbcType=VARCHAR}");
+            sql.SET("NAME = #{name,jdbcType=VARCHAR}");
         }
         
         if (record.getType() != null) {
-            sql.SET("type = #{type,jdbcType=VARCHAR}");
+            sql.SET("TYPE = #{type,jdbcType=VARCHAR}");
         }
         
         if (record.getTrade() != null) {
-            sql.SET("trade = #{trade,jdbcType=VARCHAR}");
+            sql.SET("TRADE = #{trade,jdbcType=VARCHAR}");
         }
         
         if (record.getTerm() != null) {
-            sql.SET("term = #{term,jdbcType=VARCHAR}");
+            sql.SET("TERM = #{term,jdbcType=VARCHAR}");
         }
         
         if (record.getContractTime() != null) {
-            sql.SET("contract_time = #{contractTime,jdbcType=VARCHAR}");
+            sql.SET("CONTRACT_TIME = #{contractTime,jdbcType=VARCHAR}");
         }
         
         if (record.getOverTime() != null) {
-            sql.SET("over_time = #{overTime,jdbcType=VARCHAR}");
+            sql.SET("OVER_TIME = #{overTime,jdbcType=VARCHAR}");
         }
         
         if (record.getStatus() != null) {
-            sql.SET("status = #{status,jdbcType=VARCHAR}");
+            sql.SET("STATUS = #{status,jdbcType=VARCHAR}");
         }
         
         if (record.getCooperationType() != null) {
-            sql.SET("cooperation_type = #{cooperationType,jdbcType=VARCHAR}");
+            sql.SET("COOPERATION_TYPE = #{cooperationType,jdbcType=VARCHAR}");
         }
         
         if (record.getReturnTime() != null) {
-            sql.SET("return_time = #{returnTime,jdbcType=VARCHAR}");
+            sql.SET("RETURN_TIME = #{returnTime,jdbcType=VARCHAR}");
         }
         
         if (record.getQuality() != null) {
-            sql.SET("quality = #{quality,jdbcType=VARCHAR}");
+            sql.SET("QUALITY = #{quality,jdbcType=VARCHAR}");
         }
         
         if (record.getRemark() != null) {
-            sql.SET("remark = #{remark,jdbcType=VARCHAR}");
+            sql.SET("REMARK = #{remark,jdbcType=VARCHAR}");
         }
         
         if (record.getUid() != null) {
-            sql.SET("uid = #{uid,jdbcType=VARCHAR}");
+            sql.SET("UID = #{uid,jdbcType=VARCHAR}");
         }
         
-        sql.WHERE("gid = #{gid,jdbcType=VARCHAR}");
+        if (record.getProjCode() != null) {
+            sql.SET("PROJ_CODE = #{projCode,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getEnName() != null) {
+            sql.SET("EN_NAME = #{enName,jdbcType=VARCHAR}");
+        }
+        
+        sql.WHERE("GID = #{gid,jdbcType=VARCHAR}");
         
         return sql.toString();
     }

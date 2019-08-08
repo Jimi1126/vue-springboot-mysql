@@ -1,6 +1,7 @@
 var User = function() {}
 
 User.prototype = {
+  name: "user",
   /**
    * 构造组件动作.
    */
@@ -80,20 +81,11 @@ User.prototype = {
         form: that.newform()
       },
       methods: {
-        showPwdEvent: function() {
-          var showPwdRoles = "";
-          var auths = ic_sms.auths.filter((it)=> {
-            return it.machine == "0002" && it.keyword == "showPwd"
-          }).forEach((it)=> {
-            showPwdRoles += it.roles;
-          });
-          if (showPwdRoles.indexOf(ic_sms.user.rid) == -1) {
-            return alert("没有权限");
-          }
+        showPwdEvent: $.getRole( that.name, "showPwd", function() {
           $.post("/pwd/selectByExample", {rid: this._vue.$data.form.gid}, function(response) {
             alert(response.data[0] && (response.data[0].pwd || ""));
           })
-        }
+        })
       },
       buttons: [
         {
@@ -177,20 +169,20 @@ User.prototype = {
         }
       },
       methods: {
-        addBtnEvent: () => {
+        addBtnEvent: $.getRole( that.name, "addBtn", () => {
           that.addDialogComponent.show();
-        },
-        findBtnEvent: ()=> {
+        }),
+        findBtnEvent: $.getRole( that.name, "findBtn", () => {
           that.loadTable();
-        },
-        editBtnEvent: (index, row) => {
+        }),
+        editBtnEvent: $.getRole( that.name, "editBtn", (index, row) => {
           that.editDialogComponent._vue.$data.form = Util.clone(row);
           that.editDialogComponent.show();
-        },
-        delBtnEvent: (index, row) => {
+        }),
+        delBtnEvent: $.getRole( that.name, "delBtn", (index, row) => {
           that.delDialogComponent._vue.$data.rowData = row;
           that.delDialogComponent.show();
-        },
+        }),
         displayFormat: function(row, column, cellValue, index) {
           var obj;
           switch(column.property) {

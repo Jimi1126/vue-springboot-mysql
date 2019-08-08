@@ -145,7 +145,7 @@ if (!!$) {
 		that.data.global = options.global ? options.global : false;
 		that._vue = {}
 		var id = that.id = "dialog_" + Util.uuid(16, 52);
-		var html = `<div id="${id}" :global="global"> <el-dialog>`;
+		var html = `<div id="${id}" :global="global"> <el-dialog @closed="closedEvnt">`;
 		that.data.visible = false;
 		that.children = [];
 		if (Array.isArray(options.children)) {
@@ -186,6 +186,9 @@ if (!!$) {
 			options.buttons.forEach((button, i) => {
 				that.methods["fun" + i] = button.event ? $.proxy(button.event, that) : () => {
 				};
+				if (button.name == "关闭") {
+					that.methods.closedEvnt = that.methods["fun" + i];
+				}
 				html += `<el-button type="${button.type ? button.type : "default"}" @click="fun${i}">${button.name}</el-button>`;
 			});
 			html += `</span>`
@@ -322,7 +325,7 @@ if (!!$) {
 		return that;
 	}
 
-	exportTable = function (modal,searchForm,titles,fields,exportName) {
+	exportTable = function (modal,searchForm,titles,fields,exportName, n_m_map) {
 		$.ic.loadUI.show();
 
 		$.post(`/${modal}/selectByExample`, searchForm, function (data) {
@@ -331,41 +334,62 @@ if (!!$) {
 			exportData.push(titles);
 			data.data && data.data.forEach((item) => {
 				var rowList = [];
-				fields.forEach(function (field) {
-					switch (field) {
-						case "city":
+				if (n_m_map) {
+					fields.forEach(function (field) {
+						if (new RegExp(field).test("country,city,province")) {
 							ic_sms.address.forEach((address) => {
 								if (address.areaid == item[field]) {
 									item[field] = address.areaname
 								}
 							});
-							break;
-						case "origin":
-							ic_sms.enum["客户来源"].forEach((origin) => {
-								if (origin.code == item[field]) {
-									item[field] = origin.name
+						}
+						for (var key in n_m_map) {
+							if (key != field) continue;
+							ic_sms.getEnum(n_m_map[key]).forEach((en) => {
+								if (en.code == item[field]) {
+									item[field] = en.name
 								}
 							});
-							break;
-						case "trade":
-							ic_sms.enum["行业"].forEach((trade) => {
-								if (trade.code == item[field]) {
-									item[field] = trade.name
-								}
-							});
-							break;
-						case "status":
-							ic_sms.enum["客户状态"].filter((status) => {
-								if (status.code == item[field]) {
-									item[field] = status.name
-								}
-							});
-							break;
-						default:
-							break;
-					}
-					rowList.push(item[field])
-				});
+						}
+						rowList.push(item[field])
+					});
+				} else {
+					fields.forEach(function (field) {
+						switch (field) {
+							case new RegExp(field).test("country,city,province"):
+								ic_sms.address.forEach((address) => {
+									if (address.areaid == item[field]) {
+										item[field] = address.areaname
+									}
+								});
+								break;
+							case "origin":
+								ic_sms.enum["客户来源"].forEach((origin) => {
+									if (origin.code == item[field]) {
+										item[field] = origin.name
+									}
+								});
+								break;
+							case "trade":
+								ic_sms.enum["行业"].forEach((trade) => {
+									if (trade.code == item[field]) {
+										item[field] = trade.name
+									}
+								});
+								break;
+							case "status":
+								ic_sms.enum["客户状态"].filter((status) => {
+									if (status.code == item[field]) {
+										item[field] = status.name
+									}
+								});
+								break;
+							default:
+								break;
+						}
+						rowList.push(item[field])
+					});
+				}
 				exportData.push(rowList);
 			});
 			var ws = XLSX.utils.aoa_to_sheet(exportData);
@@ -386,4 +410,36 @@ if (!!$) {
 
 	$.ic = {}
 	$.ic.loadUI = new LoadUI();
+
+	$.verifyRole = function(business, flag, callback) {
+		if (ic_sms && ic_sms.auths) {
+			var auth = ic_sms.auths.filter((it)=> {
+				return it.machine == "0002" && it.keyword == `${business}.${flag}`
+			})[0]
+			if (!auth) {
+				callback && callback();
+				return true;
+			}
+			if (auth.roles.indexOf(ic_sms.user.rid) == -1 && (!ic_sms.accessControl[auth.gid] || ic_sms.accessControl[auth.gid].indexOf(ic_sms.user.gid) == -1)) {
+				alert("没有权限");
+				return false;
+			}
+		}
+		callback && callback();
+		return true;
+	}
+	$.getRole = function(business, flag, callback) {
+		if (ic_sms && ic_sms.auths) {
+			var auth = ic_sms.auths.filter((it)=> {
+				return it.machine == "0002" && it.keyword == `${business}.${flag}`
+			})[0]
+			if (!auth || !auth.roles) {
+				return callback || function() {};
+			}
+			if (auth.roles.indexOf(ic_sms.user.rid) == -1 && (!ic_sms.accessControl[auth.gid] || ic_sms.accessControl[auth.gid].indexOf(ic_sms.user.gid) == -1)) {
+				return function() {alert("没有权限")};
+			}
+		}
+		return callback || function() {};
+	}
 }

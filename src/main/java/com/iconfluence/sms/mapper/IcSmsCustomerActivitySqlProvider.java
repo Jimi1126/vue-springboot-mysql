@@ -1,13 +1,12 @@
 package com.iconfluence.sms.mapper;
 
 import com.iconfluence.sms.model.IcSmsCustomerActivity;
-import com.iconfluence.sms.model.IcSmsCustomerActivityExample;
 import com.iconfluence.sms.model.IcSmsCustomerActivityExample.Criteria;
 import com.iconfluence.sms.model.IcSmsCustomerActivityExample.Criterion;
-import org.apache.ibatis.jdbc.SQL;
-
+import com.iconfluence.sms.model.IcSmsCustomerActivityExample;
 import java.util.List;
 import java.util.Map;
+import org.apache.ibatis.jdbc.SQL;
 
 public class IcSmsCustomerActivitySqlProvider {
 
@@ -48,51 +47,51 @@ public class IcSmsCustomerActivitySqlProvider {
         sql.INSERT_INTO("ic_sms_customer_activity");
         
         if (record.getGid() != null) {
-            sql.VALUES("gid", "#{gid,jdbcType=VARCHAR}");
+            sql.VALUES("GID", "#{gid,jdbcType=VARCHAR}");
         }
         
         if (record.getCid() != null) {
-            sql.VALUES("cid", "#{cid,jdbcType=VARCHAR}");
+            sql.VALUES("CID", "#{cid,jdbcType=VARCHAR}");
         }
         
         if (record.getSubject() != null) {
-            sql.VALUES("subject", "#{subject,jdbcType=VARCHAR}");
+            sql.VALUES("SUBJECT", "#{subject,jdbcType=VARCHAR}");
         }
         
         if (record.getContact() != null) {
-            sql.VALUES("contact", "#{contact,jdbcType=VARCHAR}");
+            sql.VALUES("CONTACT", "#{contact,jdbcType=VARCHAR}");
         }
         
         if (record.getTouchTime() != null) {
-            sql.VALUES("touch_time", "#{touchTime,jdbcType=VARCHAR}");
+            sql.VALUES("TOUCH_TIME", "#{touchTime,jdbcType=VARCHAR}");
         }
         
         if (record.getRecord() != null) {
-            sql.VALUES("record", "#{record,jdbcType=VARCHAR}");
+            sql.VALUES("RECORD", "#{record,jdbcType=VARCHAR}");
         }
         
         if (record.getType() != null) {
-            sql.VALUES("type", "#{type,jdbcType=VARCHAR}");
+            sql.VALUES("TYPE", "#{type,jdbcType=VARCHAR}");
         }
         
         if (record.getNextTime() != null) {
-            sql.VALUES("next_time", "#{nextTime,jdbcType=VARCHAR}");
+            sql.VALUES("NEXT_TIME", "#{nextTime,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getPotential() != null) {
+            sql.VALUES("POTENTIAL", "#{potential,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.VALUES("REMARK", "#{remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCreateTime() != null) {
+            sql.VALUES("CREATE_TIME", "#{createTime,jdbcType=VARCHAR}");
         }
         
         if (record.getGrade() != null) {
             sql.VALUES("grade", "#{grade,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getPotential() != null) {
-            sql.VALUES("potential", "#{potential,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getRemark() != null) {
-            sql.VALUES("remark", "#{remark,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getCreateTime() != null) {
-            sql.VALUES("create_time", "#{createTime,jdbcType=VARCHAR}");
         }
         
         return sql.toString();
@@ -107,21 +106,21 @@ public class IcSmsCustomerActivitySqlProvider {
     public String selectByExample(IcSmsCustomerActivityExample example) {
         SQL sql = new SQL();
         if (example != null && example.isDistinct()) {
-            sql.SELECT_DISTINCT("gid");
+            sql.SELECT_DISTINCT("GID");
         } else {
-            sql.SELECT("gid");
+            sql.SELECT("GID");
         }
-        sql.SELECT("cid");
-        sql.SELECT("subject");
-        sql.SELECT("contact");
-        sql.SELECT("touch_time");
-        sql.SELECT("record");
-        sql.SELECT("type");
-        sql.SELECT("next_time");
+        sql.SELECT("CID");
+        sql.SELECT("SUBJECT");
+        sql.SELECT("CONTACT");
+        sql.SELECT("TOUCH_TIME");
+        sql.SELECT("RECORD");
+        sql.SELECT("TYPE");
+        sql.SELECT("NEXT_TIME");
+        sql.SELECT("POTENTIAL");
+        sql.SELECT("REMARK");
+        sql.SELECT("CREATE_TIME");
         sql.SELECT("grade");
-        sql.SELECT("potential");
-        sql.SELECT("remark");
-        sql.SELECT("create_time");
         sql.FROM("ic_sms_customer_activity");
         applyWhere(sql, example, false);
         
@@ -146,51 +145,51 @@ public class IcSmsCustomerActivitySqlProvider {
         sql.UPDATE("ic_sms_customer_activity");
         
         if (record.getGid() != null) {
-            sql.SET("gid = #{record.gid,jdbcType=VARCHAR}");
+            sql.SET("GID = #{record.gid,jdbcType=VARCHAR}");
         }
         
         if (record.getCid() != null) {
-            sql.SET("cid = #{record.cid,jdbcType=VARCHAR}");
+            sql.SET("CID = #{record.cid,jdbcType=VARCHAR}");
         }
         
         if (record.getSubject() != null) {
-            sql.SET("subject = #{record.subject,jdbcType=VARCHAR}");
+            sql.SET("SUBJECT = #{record.subject,jdbcType=VARCHAR}");
         }
         
         if (record.getContact() != null) {
-            sql.SET("contact = #{record.contact,jdbcType=VARCHAR}");
+            sql.SET("CONTACT = #{record.contact,jdbcType=VARCHAR}");
         }
         
         if (record.getTouchTime() != null) {
-            sql.SET("touch_time = #{record.touchTime,jdbcType=VARCHAR}");
+            sql.SET("TOUCH_TIME = #{record.touchTime,jdbcType=VARCHAR}");
         }
         
         if (record.getRecord() != null) {
-            sql.SET("record = #{record.record,jdbcType=VARCHAR}");
+            sql.SET("RECORD = #{record.record,jdbcType=VARCHAR}");
         }
         
         if (record.getType() != null) {
-            sql.SET("type = #{record.type,jdbcType=VARCHAR}");
+            sql.SET("TYPE = #{record.type,jdbcType=VARCHAR}");
         }
         
         if (record.getNextTime() != null) {
-            sql.SET("next_time = #{record.nextTime,jdbcType=VARCHAR}");
+            sql.SET("NEXT_TIME = #{record.nextTime,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getPotential() != null) {
+            sql.SET("POTENTIAL = #{record.potential,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.SET("REMARK = #{record.remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCreateTime() != null) {
+            sql.SET("CREATE_TIME = #{record.createTime,jdbcType=VARCHAR}");
         }
         
         if (record.getGrade() != null) {
             sql.SET("grade = #{record.grade,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getPotential() != null) {
-            sql.SET("potential = #{record.potential,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getRemark() != null) {
-            sql.SET("remark = #{record.remark,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getCreateTime() != null) {
-            sql.SET("create_time = #{record.createTime,jdbcType=VARCHAR}");
         }
         
         applyWhere(sql, example, true);
@@ -207,18 +206,18 @@ public class IcSmsCustomerActivitySqlProvider {
         SQL sql = new SQL();
         sql.UPDATE("ic_sms_customer_activity");
         
-        sql.SET("gid = #{record.gid,jdbcType=VARCHAR}");
-        sql.SET("cid = #{record.cid,jdbcType=VARCHAR}");
-        sql.SET("subject = #{record.subject,jdbcType=VARCHAR}");
-        sql.SET("contact = #{record.contact,jdbcType=VARCHAR}");
-        sql.SET("touch_time = #{record.touchTime,jdbcType=VARCHAR}");
-        sql.SET("record = #{record.record,jdbcType=VARCHAR}");
-        sql.SET("type = #{record.type,jdbcType=VARCHAR}");
-        sql.SET("next_time = #{record.nextTime,jdbcType=VARCHAR}");
+        sql.SET("GID = #{record.gid,jdbcType=VARCHAR}");
+        sql.SET("CID = #{record.cid,jdbcType=VARCHAR}");
+        sql.SET("SUBJECT = #{record.subject,jdbcType=VARCHAR}");
+        sql.SET("CONTACT = #{record.contact,jdbcType=VARCHAR}");
+        sql.SET("TOUCH_TIME = #{record.touchTime,jdbcType=VARCHAR}");
+        sql.SET("RECORD = #{record.record,jdbcType=VARCHAR}");
+        sql.SET("TYPE = #{record.type,jdbcType=VARCHAR}");
+        sql.SET("NEXT_TIME = #{record.nextTime,jdbcType=VARCHAR}");
+        sql.SET("POTENTIAL = #{record.potential,jdbcType=VARCHAR}");
+        sql.SET("REMARK = #{record.remark,jdbcType=VARCHAR}");
+        sql.SET("CREATE_TIME = #{record.createTime,jdbcType=VARCHAR}");
         sql.SET("grade = #{record.grade,jdbcType=VARCHAR}");
-        sql.SET("potential = #{record.potential,jdbcType=VARCHAR}");
-        sql.SET("remark = #{record.remark,jdbcType=VARCHAR}");
-        sql.SET("create_time = #{record.createTime,jdbcType=VARCHAR}");
         
         IcSmsCustomerActivityExample example = (IcSmsCustomerActivityExample) parameter.get("example");
         applyWhere(sql, example, true);
@@ -236,50 +235,50 @@ public class IcSmsCustomerActivitySqlProvider {
         sql.UPDATE("ic_sms_customer_activity");
         
         if (record.getCid() != null) {
-            sql.SET("cid = #{cid,jdbcType=VARCHAR}");
+            sql.SET("CID = #{cid,jdbcType=VARCHAR}");
         }
         
         if (record.getSubject() != null) {
-            sql.SET("subject = #{subject,jdbcType=VARCHAR}");
+            sql.SET("SUBJECT = #{subject,jdbcType=VARCHAR}");
         }
         
         if (record.getContact() != null) {
-            sql.SET("contact = #{contact,jdbcType=VARCHAR}");
+            sql.SET("CONTACT = #{contact,jdbcType=VARCHAR}");
         }
         
         if (record.getTouchTime() != null) {
-            sql.SET("touch_time = #{touchTime,jdbcType=VARCHAR}");
+            sql.SET("TOUCH_TIME = #{touchTime,jdbcType=VARCHAR}");
         }
         
         if (record.getRecord() != null) {
-            sql.SET("record = #{record,jdbcType=VARCHAR}");
+            sql.SET("RECORD = #{record,jdbcType=VARCHAR}");
         }
         
         if (record.getType() != null) {
-            sql.SET("type = #{type,jdbcType=VARCHAR}");
+            sql.SET("TYPE = #{type,jdbcType=VARCHAR}");
         }
         
         if (record.getNextTime() != null) {
-            sql.SET("next_time = #{nextTime,jdbcType=VARCHAR}");
+            sql.SET("NEXT_TIME = #{nextTime,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getPotential() != null) {
+            sql.SET("POTENTIAL = #{potential,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getRemark() != null) {
+            sql.SET("REMARK = #{remark,jdbcType=VARCHAR}");
+        }
+        
+        if (record.getCreateTime() != null) {
+            sql.SET("CREATE_TIME = #{createTime,jdbcType=VARCHAR}");
         }
         
         if (record.getGrade() != null) {
             sql.SET("grade = #{grade,jdbcType=VARCHAR}");
         }
         
-        if (record.getPotential() != null) {
-            sql.SET("potential = #{potential,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getRemark() != null) {
-            sql.SET("remark = #{remark,jdbcType=VARCHAR}");
-        }
-        
-        if (record.getCreateTime() != null) {
-            sql.SET("create_time = #{createTime,jdbcType=VARCHAR}");
-        }
-        
-        sql.WHERE("gid = #{gid,jdbcType=VARCHAR}");
+        sql.WHERE("GID = #{gid,jdbcType=VARCHAR}");
         
         return sql.toString();
     }

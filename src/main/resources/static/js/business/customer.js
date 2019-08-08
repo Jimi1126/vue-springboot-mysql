@@ -2,6 +2,7 @@ var Customer = function () {
 }
 
 Customer.prototype = {
+	name: 'customer',
 	/**
 		* 构造组件动作.
 		*/
@@ -39,7 +40,7 @@ Customer.prototype = {
 			site: '',
 			origin: '',
 			grade: '',
-			stffName: '',
+			stffName: ic_sms.user.name,
 			uid: '',
 			trade: '',
 			status: '',
@@ -75,7 +76,8 @@ Customer.prototype = {
 		return {
 			gid: Util.uuid(32, 52),
 			subject: "",
-			touchTime: '',
+			contact: "",
+			touchTime: new Date(),
 			record: '',
 			type: '',
 			nextTime: '',
@@ -95,10 +97,10 @@ Customer.prototype = {
 	<el-form-item label="客户名称">
 		<el-input v-model="form.name"></el-input>
 	</el-form-item>
-	<el-form-item label="地区">
+	<el-form-item label="详细地址">
 		<el-input v-model="form.area"></el-input>
 	</el-form-item>
-	<el-form-item label="详细地址">
+	<el-form-item label="所属地域">
 		<el-row>
 			<el-col :span="4">
 				<el-select solt="prepend" v-model="form.country" @change="select_change" filterable placeholder="国家">
@@ -143,9 +145,9 @@ Customer.prototype = {
 	</el-form-item>
 	</el-form>`,
 		data: {
-			trades: window.ic_sms.enum["行业"],
-			statuss: window.ic_sms.enum["客户状态"],
-			origins: window.ic_sms.enum["客户来源"],
+			trades: window.ic_sms.getEnum("行业"),
+			statuss: window.ic_sms.getEnum("客户状态"),
+			origins: window.ic_sms.getEnum("客户来源"),
 			countrys: window.ic_sms["国"],
 			provinces: [],
 			citys: [],
@@ -250,7 +252,7 @@ Customer.prototype = {
 			<el-col :span="8">
 				<el-form-item label="所属业务员：">
 					<el-select solt="prepend" v-bind:value="form.uid" :readOnly="true" style="width:100%">
-						<el-option v-for="item in trades" :label="item.name" :value="item.code"></el-option>
+						<el-option v-for="item in users" :label="item.name" :value="item.name"></el-option>
 					</el-select>
 				</el-form-item>
 			</el-col>
@@ -287,10 +289,11 @@ Customer.prototype = {
 				<el-table-column prop="name" label="姓名"></el-table-column>
 				<el-table-column prop="department" label="部门"></el-table-column>
 				<el-table-column prop="position" label="职位"></el-table-column>
-				<el-table-column prop="landline" label="座机"></el-table-column>
+				<el-table-column prop="quhao" label="区号"></el-table-column>
 				<el-table-column prop="extension" label="分机"></el-table-column>
 				<el-table-column prop="mobile" label="手机"></el-table-column>
 				<el-table-column prop="email" label="邮箱"></el-table-column>
+				<el-table-column prop="grade" :formatter="displayFormat" label="关系等级"></el-table-column>
 				<el-table-column prop="lastTime" label="最后联系时间" width="180"></el-table-column>
 				<el-table-column width="125" label="操作">
 					<template slot-scope="scope">
@@ -303,12 +306,11 @@ Customer.prototype = {
 			<h3>活动信息</h3>
 			<el-table :data="activitys" border height="250" stripe style="width: 100%;">
 				<el-table-column prop="subject" label="活动主题"></el-table-column>
-				<el-table-column prop="contact" label="联系人"></el-table-column>
+				<el-table-column prop="contact" label="联系人" sortable></el-table-column>
 				<el-table-column prop="touchTime" label="联系时间"></el-table-column>
 				<el-table-column prop="record" label="沟通记录"></el-table-column>
-				<el-table-column prop="type" label="联系类型"></el-table-column>
+				<el-table-column prop="type" :formatter="displayFormat" label="联系类型"></el-table-column>
 				<el-table-column prop="nextTime" label="下次联系时间"></el-table-column>
-				<el-table-column prop="grade" label="关系等级"></el-table-column>
 				<el-table-column width="125" label="操作">
 					<template slot-scope="scope">
 						<el-button size="mini" @click="editBtnEvent(scope.$index, scope.row)"><i class="el-icon-edit"></i></el-button>
@@ -318,9 +320,10 @@ Customer.prototype = {
 			</el-table>
 			`,
 				data: {
-					trades: window.ic_sms.enum["行业"],
-					statuss: window.ic_sms.enum["客户状态"],
-					origins: window.ic_sms.enum["客户来源"],
+					trades: window.ic_sms.getEnum("行业"),
+					users: window.ic_sms.getEnum("用户"),
+					statuss: window.ic_sms.getEnum("客户状态"),
+					origins: window.ic_sms.getEnum("客户来源"),
 					provinces: [],
 					citys: [],
 					contacts: [],
@@ -338,10 +341,13 @@ Customer.prototype = {
 						ethis.children[0]._vue.$data.sign = "updateByPrimaryKey";
 						if (row.subject) {
 							ethis.children[0]._vue.$data.showTab = ["activity"];
-							ethis.children[0]._vue.$data.activity = row;
+							ethis.children[0]._vue.$data.contact = ethis.children[0]._vue.$data.contactss.filter((it)=> {return it.name == row.contact})[0] || {};
+							// ethis.children[0]._vue.$data.contact = Util.clone(ethis.children[0]._vue.$data.contact);
+							ethis.children[0]._vue.$data.activity = ethis.children[0]._vue.$data.activityss.filter((it)=> {return it.gid == row.gid})[0] || {};
 						} else {
 							ethis.children[0]._vue.$data.showTab = ["contact"];
-							ethis.children[0]._vue.$data.contact = row;
+							// ethis.children[0]._vue.$data.contact = row;
+							ethis.children[0]._vue.$data.contact = ethis.children[0]._vue.$data.contactss.filter((it)=> {return it.gid == row.gid})[0] || {};
 						}
 						ethis.children[0].show();
 					},
@@ -356,6 +362,23 @@ Customer.prototype = {
 						}
 						ethis.children[1].show();
 					},
+					displayFormat: function (row, column, cellValue, index) {
+						var obj;
+						switch (column.property) {
+							case "grade":
+								obj = ic_sms.getEnum("关系等级").filter((item) => {
+									return item.code == cellValue
+								})[0] || {};
+								return obj.name || "";
+							case "type":
+								obj = ic_sms.getEnum("联系类型").filter((item) => {
+									return item.code == cellValue
+								})[0] || {};
+								return obj.name || "";
+							default:
+								return cellValue;
+						}
+					},
 				},
 				children: [
 					{
@@ -367,7 +390,10 @@ Customer.prototype = {
 				<el-row>
 					<el-col :span="6">
 						<el-form-item label="姓名：">
-							<el-input v-model="contact.name"></el-input>
+							<el-select solt="prepend" v-model="contact.name" filterable allow-create :disabled="disabled" @change="selectCustUser" style="width:100%">
+								<el-option v-for="item in contactss" :label="item.name" :value="item.name"></el-option>
+							</el-select>
+							<!-- <el-input v-model="contact.name"></el-input> -->
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
@@ -379,23 +405,25 @@ Customer.prototype = {
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="部门：">
-							<el-select solt="prepend" v-model="contact.department" style="width:100%">
+							<el-input v-model="contact.department"></el-input>
+							<!-- <el-select solt="prepend" v-model="contact.department" style="width:100%">
 								<el-option v-for="item in departments" :label="item.name" :value="item.code"></el-option>
-							</el-select>
+							</el-select> -->
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
 						<el-form-item label="职位：">
-							<el-select solt="prepend" v-model="contact.position" style="width:100%">
+							<el-input v-model="contact.position"></el-input>
+							<!-- <el-select solt="prepend" v-model="contact.position" style="width:100%">
 								<el-option v-for="item in positions" :label="item.name" :value="item.code"></el-option>
-							</el-select>
+							</el-select> -->
 						</el-form-item>
 					</el-col>
 				</el-row>
 				<el-row>
 					<el-col :span="6">
 						<el-form-item label="座机：">
-							<el-input v-model="contact.areaCode" placeholder="区号"></el-input>
+							<el-input v-model="contact.quhao" placeholder="区号"></el-input>
 							<el-input v-model="contact.phone" placeholder="电话"></el-input>
 							<el-input v-model="contact.extension" placeholder="分机"></el-input>
 						</el-form-item>
@@ -410,15 +438,11 @@ Customer.prototype = {
 							<el-input v-model="contact.email"></el-input>
 						</el-form-item>
 					</el-col>
-					<el-col :span="6">
-						<el-form-item label="地 址：">
-							<el-input v-model="contact.area"></el-input>
-						</el-form-item>
-					</el-col>
+					
 				</el-row>
 				<el-row>
 					<el-col :span="8">
-						<el-form-item label="是否主责联系人：">
+						<el-form-item label="是否关键联系人：">
 							<el-select solt="prepend" v-model="contact.mainContact" style="width:100%">
 								<el-option v-for="item in isOrNot" :label="item.name" :value="item.code"></el-option>
 							</el-select>
@@ -441,11 +465,14 @@ Customer.prototype = {
 					<el-col :span="12">
 						<el-form-item label="活动主题：">
 							<el-input v-model="activity.subject"></el-input>
+							<!-- <el-select solt="prepend" v-model="activity.subject" style="width:100%">
+								<el-option v-for="item in subjects" :label="item.name" :value="item.code"></el-option>
+							</el-select> -->
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
 						<el-form-item label="联系类型：">
-							<el-select solt="prepend" v-model="contact.type" style="width:100%">
+							<el-select solt="prepend" v-model="activity.type" style="width:100%">
 								<el-option v-for="item in types" :label="item.name" :value="item.code"></el-option>
 							</el-select>
 						</el-form-item>
@@ -457,7 +484,7 @@ Customer.prototype = {
 				<el-row>
 					<el-col :span="12">
 						<el-form-item label="联系时间：">
-							<el-date-picker v-model="activity.touchTime" type="date" placeholder="选择日期"></el-date-picker>
+							<el-date-picker v-model="activity.touchTime" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期"></el-date-picker>
 						</el-form-item>
 					</el-col>
 					<el-col :span="12">
@@ -471,19 +498,40 @@ Customer.prototype = {
 					data: {
 						sign: "",
 						showTab: [],
-						sexs: ic_sms.enum["性别"] || [],
-						departments: ic_sms.enum["部门"] || [],
-						positions: ic_sms.enum["职位"] || [],
-						isOrNot: ic_sms.enum["是否"] || [],
-						grades: ic_sms.enum["关系等级"] || [],
-						types: ic_sms.enum["联系类型"] || [],
+						disabled: this.showTab == "updateByPrimaryKey",
+						sexs: ic_sms.getEnum("性别"),
+						// subjects: ic_sms.getEnum("主题"),
+						// departments: ic_sms.getEnum("部门"),
+						// positions: ic_sms.getEnum("职位"),
+						isOrNot: ic_sms.getEnum("是否"),
+						grades: ic_sms.getEnum("关系等级"),
+						types: ic_sms.getEnum("联系类型"),
+						contactss: [],
 						contact: that.getContact(),
 						activity: that.getActivity()
+					},
+					methods: {
+						selectCustUser: function(name) {
+							var dialogThis = this;
+							debugger
+							if (dialogThis._vue.$data.sign == "updateByPrimaryKey") {
+								return;
+							} else if (dialogThis._vue.$data.contactss.some((it)=> {return it.name == name})) {
+								dialogThis._vue.$data.contact = dialogThis._vue.$data.contactss.filter((it)=> {return it.name == name})[0];
+							} else {
+								var contact = that.getContact();
+								contact.name = name;
+								dialogThis._vue.$data.contact = contact;
+							}
+						}
 					},
 					buttons: [
 						{
 							name: "关闭",
 							event: function () {
+								var dialogThis = this;
+								dialogThis._vue.$data.activity = that.getActivity();
+								dialogThis._vue.$data.contact = that.getContact();
 								this.hide();
 							}
 						},
@@ -492,22 +540,46 @@ Customer.prototype = {
 							type: "primary",
 							event: function () {
 								var dialogThis = this;
-								$.ic.loadUI.show();
-								var contact = Util.clone(dialogThis._vue.$data.contact);
-								var activity = Util.clone(dialogThis._vue.$data.activity);
+								// debugger
+								// var contact = Util.clone(dialogThis._vue.$data.contact);
+								// var activity = Util.clone(dialogThis._vue.$data.activity);
+								var contact = dialogThis._vue.$data.contact;
+								var activity = dialogThis._vue.$data.activity;
+								if (!contact.name) {
+									return alert("联系人姓名不能为空");
+								}
 								contact.cid = dialogThis.parent._vue.$data.form.gid;
 								activity.cid = dialogThis.parent._vue.$data.form.gid;
 								contact.createTime = moment().format("YYYY-MM-DD HH:mm:ss");
 								activity.touchTime = moment(activity.touchTime).format("YYYY-MM-DD HH:mm:ss");
-								activity.nextTime = moment(activity.nextTime).format("YYYY-MM-DD HH:mm:ss");
+								activity.nextTime = moment(activity.nextTime).format("YYYY-MM-DD");
+								if (dialogThis._vue.$data.showTab.length == 2) {
+									var activitys = dialogThis._vue.$data.activityss.filter((it)=> {return it.contact == contact.name});
+									var lastTime = activitys.length > 1 ? activitys.reduce((prev, cur)=>{return prev.touchTime ? moment.max(moment(prev.touchTime), moment(cur.touchTime)) : moment.max(prev, moment(cur.touchTime))}).format("YYYY-MM-DD HH:mm:ss") : activity.touchTime
+									lastTime = moment.max(moment(lastTime), moment(activity.touchTime)).format("YYYY-MM-DD HH:mm:ss");
+									activity.contact = contact.name;
+									contact.lastTime = lastTime;
+								}
+								if (dialogThis._vue.$data.showTab.length == 1 && dialogThis._vue.$data.showTab.includes("activity")) {
+									var activitys = dialogThis._vue.$data.activityss.filter((it)=> {return it.contact == contact.name});
+									var lastTime = activitys.length > 1 ? activitys.reduce((prev, cur)=>{return prev.touchTime ? moment.max(moment(prev.touchTime), moment(cur.touchTime)) : moment.max(prev, moment(cur.touchTime))}).format("YYYY-MM-DD HH:mm:ss") : activity.touchTime
+									var updateContact = !(contact.lastTime == lastTime);
+									contact.lastTime = contact.lastTime ? (moment.max(moment(contact.lastTime), moment(lastTime)).format("YYYY-MM-DD HH:mm:ss")) : lastTime;
+								}
+								$.ic.loadUI.show();
 								async.series([
 									function (callback) {
-										if (!dialogThis._vue.$data.showTab.includes("contact")) {
+										if (!dialogThis._vue.$data.showTab.includes("contact") && !updateContact) {
+											return callback(null);
+										}
+										if (dialogThis._vue.$data.showTab.length == 1 && dialogThis._vue.$data.showTab.includes("activity") && !updateContact) {
+											return callback(null);
+										}
+										if (dialogThis._vue.$data.sign == "insert" && dialogThis._vue.$data.contactss.some((it)=> {return it.gid == contact.gid})) {
 											return callback(null);
 										}
 										$.post("/contact/" + dialogThis._vue.$data.sign, contact, function (data, status, xhr) {
 											dialogThis._vue.$data.sign == "insert" && dialogThis.parent._vue.$data.contacts.push(contact);
-											dialogThis._vue.$data.contact = that.getContact();
 											callback(null);
 										});
 									},
@@ -517,12 +589,13 @@ Customer.prototype = {
 										}
 										$.post("/activity/" + dialogThis._vue.$data.sign, activity, function (data, status, xhr) {
 											dialogThis._vue.$data.sign == "insert" && dialogThis.parent._vue.$data.activitys.push(activity);
-											dialogThis._vue.$data.activity = that.getActivity();
 											callback(null);
 										});
 									}
 								], function (err) {
 									alert("操作完成");
+									dialogThis._vue.$data.activity = that.getActivity();
+									dialogThis._vue.$data.contact = that.getContact();
 									$.ic.loadUI.hide();
 									dialogThis.hide();
 								});
@@ -552,10 +625,9 @@ Customer.prototype = {
 									$.post(`/${delDialogThis._vue.$data.sign}/deleteByPrimaryKey`, delDialogThis._vue.$data.rowData, function (data, status, xhr) {
 										if (data.data > 0) {
 											alert("删除成功");
-											// var thisArr = that.detailDialogComponent._vue.$data[`${delDialogThis._vue.$data.sign}s`];
-											// thisArr = thisArr.filter((dat)=> {
-											// return dat.gid != delDialogThis._vue.$data.rowData.gid
-											// });
+											var tableDD = delDialogThis.parent.children[0]._vue.$data[`${delDialogThis._vue.$data.sign}ss`];
+											var index = tableDD.findIndex((it)=> {return it.gid == delDialogThis._vue.$data.rowData.gid});
+											tableDD.splice(index, 1)
 											delDialogThis.hide();
 										} else {
 											alert("删除失败");
@@ -676,9 +748,10 @@ Customer.prototype = {
 				el: "#customer_app",
 				data: {
 					customList: [],
-					trades: window.ic_sms.enum["行业"],
-					statuss: window.ic_sms.enum["客户状态"],
-					origins: window.ic_sms.enum["客户来源"],
+					trades: window.ic_sms.getEnum("行业"),
+					users: window.ic_sms.getEnum("用户"),
+					statuss: window.ic_sms.getEnum("客户状态"),
+					origins: window.ic_sms.getEnum("客户来源"),
 					countrys: window.ic_sms["国"],
 					provinces: [],
 					citys: [],
@@ -700,16 +773,16 @@ Customer.prototype = {
 					pagesize: 10
 				},
 				methods: {
-					addBtnEvent: () => {
+					addBtnEvent: $.getRole( that.name, "addBtn", () => {
 						that.addDialogComponent.show();
-					},
-					importBtnEvt: function () {
+					}),
+					importBtnEvt: $.getRole( that.name, "import", () => {
 						that.imptDialogComponent.show();
-					},
-					findBtnEvent: () => {
+					}),
+					findBtnEvent: $.getRole( that.name, "findBtn", () => {
 						that.loadTable();
-					},
-					cellClickEvent: (row, col, cell, e) => {
+					}),
+					cellClickEvent: $.getRole( that.name, "cellClick", (row, col, cell, e) => {
 						if (col.property == "name") {
 							that.detailDialogComponent._vue.$data.provinces = ic_sms.address.filter((add) => {
 								return add.parentid == row.country
@@ -726,12 +799,14 @@ Customer.prototype = {
 								function (callback) {
 									$.post("/contact/selectByExample", query, function (response) {
 										that.detailDialogComponent._vue.$data.contacts = response.data || [];
+										that.detailDialogComponent.children[0]._vue.$data.contactss = response.data || []
 										callback(null);
 									});
 								},
 								function (callback) {
 									$.post("/activity/selectByExample", query, function (response) {
 										that.detailDialogComponent._vue.$data.activitys = response.data || [];
+										that.detailDialogComponent.children[0]._vue.$data.activityss = response.data || []
 										callback(null);
 									});
 								}
@@ -743,7 +818,7 @@ Customer.prototype = {
 								that.detailDialogComponent.show();
 							});
 						}
-					},
+					}),
 					select_change: (areaid) => {
 						var curAdd;
 						window.ic_sms.address.forEach((add) => {
@@ -763,7 +838,7 @@ Customer.prototype = {
 							that.page_vue.$data.search_form.city = "";
 						}
 					},
-					editBtnEvent: (index, row) => {
+					editBtnEvent: $.getRole( that.name, "editBtn", (index, row) => {
 						that.editDialogComponent._vue.$data.provinces = ic_sms.address.filter((add) => {
 							return add.parentid == row.country
 						});
@@ -774,11 +849,11 @@ Customer.prototype = {
 						row.city = +row.city;
 						that.editDialogComponent._vue.$data.form = Util.clone(row);
 						that.editDialogComponent.show();
-					},
-					delBtnEvent: (index, row) => {
+					}),
+					delBtnEvent: $.getRole( that.name, "delBtn", (index, row) => {
 						that.delDialogComponent._vue.$data.rowData = row;
 						that.delDialogComponent.show();
-					},
+					}),
 					displayFormat: function (row, column, cellValue, index) {
 						var obj;
 						switch (column.property) {
@@ -788,17 +863,17 @@ Customer.prototype = {
 								})[0] || {};
 								return obj.areaname || "";
 							case "origin":
-								obj = ic_sms.enum["客户来源"].filter((item) => {
+								obj = ic_sms.getEnum("客户来源").filter((item) => {
 									return item.code == cellValue
 								})[0] || {};
 								return obj.name || "";
 							case "trade":
-								obj = ic_sms.enum["行业"].filter((item) => {
+								obj = ic_sms.getEnum("行业").filter((item) => {
 									return item.code == cellValue
 								})[0] || {};
 								return obj.name || "";
 							case "status":
-								obj = ic_sms.enum["客户状态"].filter((item) => {
+								obj = ic_sms.getEnum("客户状态").filter((item) => {
 									return item.code == cellValue
 								})[0] || {};
 								return obj.name || "";
@@ -806,12 +881,12 @@ Customer.prototype = {
 								return cellValue;
 						}
 					},
-					exportTable: () => {
+					exportTable: $.getRole( that.name, "export", () => {
 						var searchForm=that.page_vue.$data.search_form;
 						var cloneObj = Util.clone(searchForm);
 						cloneObj.name = cloneObj.name ? `%${cloneObj.name}%` : '';
 						exportTable("customer",searchForm,this.titles,this.fields,"电话拓展管理");
-					},
+					}),
 					handleSizeChange: function (val) {
 						that.page_vue.$data.pagesize = val;
 						that.pagingQuery();

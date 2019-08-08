@@ -2,6 +2,7 @@ var CustomerVisit = function () {
 }
 
 CustomerVisit.prototype = {
+    name: "customerVisit",
     /**
      * 构造组件动作.
      */
@@ -71,10 +72,10 @@ CustomerVisit.prototype = {
                      <el-form-item label="来访目的:">
                        <el-input v-model="form.objective"></el-input>
                      </el-form-item>
-                      <el-form-item label="客户来访人员:">
+                      <el-form-item label="来访人员:">
                         <el-input v-model="form.cUser"></el-input>
                       </el-form-item>
-                      <el-form-item label="HL接访人员:">
+                      <el-form-item label="接访人员:">
                         <el-input v-model="form.hlUser"></el-input>
                       </el-form-item>
                       <el-form-item label="备注:">
@@ -149,6 +150,7 @@ CustomerVisit.prototype = {
     getDelDialog: function () {
         return new Dialog({
             title: "删除",
+            body: `是否删除选择行?`,
             data: {
                 rowData: {}
             },
@@ -238,27 +240,27 @@ CustomerVisit.prototype = {
                 }]
             },
             methods: {
-                addBtnEvent: () => {
+                addBtnEvent: $.getRole( that.name, "addBtn", () => {
                     that.addDialogComponent.show();
-                },
-                editBtnEvent: (index, row) => {
+                }),
+                editBtnEvent: $.getRole( that.name, "editBtn", (index, row) => {
                     that.editDialogComponent._vue.$data.form = Util.clone(row);
                     that.editDialogComponent._vue.$data.form.cUser = that.editDialogComponent._vue.$data.form.cuser;
                     that.editDialogComponent.show();
-                },
-                delBtnEvent: (index, row) => {
+                }),
+                delBtnEvent: $.getRole( that.name, "delBtn", (index, row) => {
                     that.delDialogComponent._vue.$data.rowData = row;
                     that.delDialogComponent.show();
-                },
-                search() {
+                }),
+                search: $.getRole( that.name, "findBtn", () => {
                     that.loadTable();
-                },
-                exportTable: () => {
-                    var searchForm=that.page_vue.$data.search_form;
+                }),
+                exportTable: $.getRole( that.name, "export", () => {
+                    var searchForm=that.mainTable.$data.search_form;
                     var cloneObj = Util.clone(searchForm);
                     cloneObj.visitUnit = cloneObj.visitUnit ? `%${cloneObj.visitUnit}%` : '';
                     exportTable("comeVisit",searchForm,this.titles,this.fields,"客户来访管理");
-                }
+                })
 
             },
         })

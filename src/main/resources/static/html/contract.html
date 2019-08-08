@@ -66,14 +66,17 @@
   <el-table :data="customList" border height="450" stripe style="width: 100%;" id="CT_Table">
     <el-table-column prop="contractTime" :show-overflow-tooltip="tooltip" label="年份"></el-table-column>
     <!-- <el-table-column prop="name" label="月份"></el-table-column> -->
+    <el-table-column prop="projCode" :show-overflow-tooltip="tooltip" label="项目编码"></el-table-column>
     <el-table-column prop="customerName" :show-overflow-tooltip="tooltip" label="客户名称"></el-table-column>
-    <el-table-column prop="name" :show-overflow-tooltip="tooltip" label="合同名称"></el-table-column>
+    <el-table-column prop="enName" :show-overflow-tooltip="tooltip" label="英文缩写"></el-table-column>
+    <el-table-column prop="name" :show-overflow-tooltip="tooltip" label="合同名称" :formatter="displayFormat"></el-table-column>
     <el-table-column prop="trade" :show-overflow-tooltip="tooltip" label="所属行业" :formatter="displayFormat"></el-table-column>
     <el-table-column prop="cooperationType" :show-overflow-tooltip="tooltip" label="合作类型" :formatter="displayFormat"></el-table-column>
     <el-table-column prop="term" :show-overflow-tooltip="tooltip" label="合作期限"></el-table-column>
     <el-table-column prop="overTime" :show-overflow-tooltip="tooltip" label="结束时间"></el-table-column>
     <el-table-column prop="status" :show-overflow-tooltip="tooltip" label="合作状态" :formatter="displayFormat"></el-table-column>
     <el-table-column prop="type" :show-overflow-tooltip="tooltip" label="合同类型" :formatter="displayFormat"></el-table-column>
+    <el-table-column prop="remark" :show-overflow-tooltip="tooltip" label="备注"></el-table-column>
     <el-table-column width="125" label="操作">
       <template slot-scope="scope">
         <el-button size="mini" @click="editBtnEvent(scope.$index, scope.row)"><i class="el-icon-edit"></i></el-button>

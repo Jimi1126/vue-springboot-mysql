@@ -51,6 +51,35 @@ Main.prototype = {
             window.ic_sms.enum[en.typeName] || (window.ic_sms.enum[en.typeName] = []);
             window.ic_sms.enum[en.typeName].push(en);
           });
+          for (var key in window.ic_sms.enum) {
+            window.ic_sms.enum[key] = window.ic_sms.enum[key].sort((a, b)=> {
+              return +a.code - +b.code;
+            })
+          }
+          ic_sms.getEnum("角色").forEach((it)=> {
+            if (it.code == ic_sms.user.rid) {
+              return ic_sms.user.rName = it.name;
+            }
+          });
+          ic_sms.getEnum("职位").forEach((it)=> {
+            if (it.code == ic_sms.user.pid) {
+              return ic_sms.user.pName = it.name;
+            }
+          });
+          ic_sms.getEnum("员工状态").forEach((it)=> {
+            if (it.code == ic_sms.user.status) {
+              return ic_sms.user.status = it.name;
+            }
+          });
+          callback(null);
+        });
+        window.ic_sms.getEnum = function(str) {
+          return window.ic_sms.enum[str] || []
+        }
+      },
+      (callback)=> {
+        $.post("/user/selectByExample", function(res) {
+          window.ic_sms.enum["用户"] = res.data;
           callback(null);
         });
       },
@@ -62,7 +91,12 @@ Main.prototype = {
       },
       (callback)=> {
         $.post("/accessControl/selectByExample", function(res) {
-          ic_sms.user.accessControl = res.data || [];
+          ic_sms.accessControl = {};
+          var list = res.data || [];
+          list.forEach((it)=> {
+            ic_sms.accessControl[it.authid] = ic_sms.accessControl[it.authid] || "";
+            ic_sms.accessControl[it.authid] += "," + it.userid;
+          })
           callback(null);
         });
       }
@@ -154,7 +188,8 @@ Main.prototype = {
     that.page_vue = new Vue({
       el: ".app-container",
       data: {
-        name: ic_sms.user.name || ""
+        user: ic_sms.user || {},
+        condition: true
       },
       methods: {
         quitEvent: function() {

@@ -2,10 +2,19 @@ package com.iconfluence.sms.mapper;
 
 import com.iconfluence.sms.model.IcSmsCustomerActivity;
 import com.iconfluence.sms.model.IcSmsCustomerActivityExample;
-import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.type.JdbcType;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Arg;
+import org.apache.ibatis.annotations.ConstructorArgs;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.DeleteProvider;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.type.JdbcType;
 
 public interface IcSmsCustomerActivityMapper extends BaseMapper<IcSmsCustomerActivity, IcSmsCustomerActivityExample> {
     /**
@@ -34,7 +43,7 @@ public interface IcSmsCustomerActivityMapper extends BaseMapper<IcSmsCustomerAct
      */
     @Delete({
         "delete from ic_sms_customer_activity",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     int deleteByPrimaryKey(String gid);
 
@@ -45,18 +54,18 @@ public interface IcSmsCustomerActivityMapper extends BaseMapper<IcSmsCustomerAct
      * @mbg.generated
      */
     @Insert({
-        "insert into ic_sms_customer_activity (gid, cid, ",
-        "subject, contact, ",
-        "touch_time, record, ",
-        "type, next_time, ",
-        "grade, potential, ",
-        "remark, create_time)",
+        "insert into ic_sms_customer_activity (GID, CID, ",
+        "SUBJECT, CONTACT, ",
+        "TOUCH_TIME, RECORD, ",
+        "TYPE, NEXT_TIME, ",
+        "POTENTIAL, REMARK, ",
+        "CREATE_TIME, grade)",
         "values (#{gid,jdbcType=VARCHAR}, #{cid,jdbcType=VARCHAR}, ",
         "#{subject,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, ",
         "#{touchTime,jdbcType=VARCHAR}, #{record,jdbcType=VARCHAR}, ",
         "#{type,jdbcType=VARCHAR}, #{nextTime,jdbcType=VARCHAR}, ",
-        "#{grade,jdbcType=VARCHAR}, #{potential,jdbcType=VARCHAR}, ",
-        "#{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR})"
+        "#{potential,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, ",
+        "#{createTime,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR})"
     })
     int insert(IcSmsCustomerActivity record);
 
@@ -77,18 +86,18 @@ public interface IcSmsCustomerActivityMapper extends BaseMapper<IcSmsCustomerAct
      */
     @SelectProvider(type=IcSmsCustomerActivitySqlProvider.class, method="selectByExample")
     @ConstructorArgs({
-        @Arg(column="gid", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
-        @Arg(column="cid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="subject", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="contact", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="touch_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="record", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="type", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="next_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="grade", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="potential", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="remark", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="create_time", javaType=String.class, jdbcType=JdbcType.VARCHAR)
+        @Arg(column="GID", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
+        @Arg(column="CID", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="SUBJECT", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="CONTACT", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="TOUCH_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="RECORD", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="TYPE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="NEXT_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="POTENTIAL", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="REMARK", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="CREATE_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="grade", javaType=String.class, jdbcType=JdbcType.VARCHAR)
     })
     List<IcSmsCustomerActivity> selectByExample(IcSmsCustomerActivityExample example);
 
@@ -100,24 +109,24 @@ public interface IcSmsCustomerActivityMapper extends BaseMapper<IcSmsCustomerAct
      */
     @Select({
         "select",
-        "gid, cid, subject, contact, touch_time, record, type, next_time, grade, potential, ",
-        "remark, create_time",
+        "GID, CID, SUBJECT, CONTACT, TOUCH_TIME, RECORD, TYPE, NEXT_TIME, POTENTIAL, ",
+        "REMARK, CREATE_TIME, grade",
         "from ic_sms_customer_activity",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     @ConstructorArgs({
-        @Arg(column="gid", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
-        @Arg(column="cid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="subject", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="contact", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="touch_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="record", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="type", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="next_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="grade", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="potential", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="remark", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="create_time", javaType=String.class, jdbcType=JdbcType.VARCHAR)
+        @Arg(column="GID", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
+        @Arg(column="CID", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="SUBJECT", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="CONTACT", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="TOUCH_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="RECORD", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="TYPE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="NEXT_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="POTENTIAL", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="REMARK", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="CREATE_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="grade", javaType=String.class, jdbcType=JdbcType.VARCHAR)
     })
     IcSmsCustomerActivity selectByPrimaryKey(String gid);
 
@@ -156,18 +165,18 @@ public interface IcSmsCustomerActivityMapper extends BaseMapper<IcSmsCustomerAct
      */
     @Update({
         "update ic_sms_customer_activity",
-        "set cid = #{cid,jdbcType=VARCHAR},",
-          "subject = #{subject,jdbcType=VARCHAR},",
-          "contact = #{contact,jdbcType=VARCHAR},",
-          "touch_time = #{touchTime,jdbcType=VARCHAR},",
-          "record = #{record,jdbcType=VARCHAR},",
-          "type = #{type,jdbcType=VARCHAR},",
-          "next_time = #{nextTime,jdbcType=VARCHAR},",
-          "grade = #{grade,jdbcType=VARCHAR},",
-          "potential = #{potential,jdbcType=VARCHAR},",
-          "remark = #{remark,jdbcType=VARCHAR},",
-          "create_time = #{createTime,jdbcType=VARCHAR}",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "set CID = #{cid,jdbcType=VARCHAR},",
+          "SUBJECT = #{subject,jdbcType=VARCHAR},",
+          "CONTACT = #{contact,jdbcType=VARCHAR},",
+          "TOUCH_TIME = #{touchTime,jdbcType=VARCHAR},",
+          "RECORD = #{record,jdbcType=VARCHAR},",
+          "TYPE = #{type,jdbcType=VARCHAR},",
+          "NEXT_TIME = #{nextTime,jdbcType=VARCHAR},",
+          "POTENTIAL = #{potential,jdbcType=VARCHAR},",
+          "REMARK = #{remark,jdbcType=VARCHAR},",
+          "CREATE_TIME = #{createTime,jdbcType=VARCHAR},",
+          "grade = #{grade,jdbcType=VARCHAR}",
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(IcSmsCustomerActivity record);
 }

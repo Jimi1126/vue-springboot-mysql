@@ -1,6 +1,7 @@
 var Authority = function() {}
 
 Authority.prototype = {
+	name: 'authority',
   auths: [],
   users: [],
 	/**
@@ -179,8 +180,8 @@ Authority.prototype = {
       `<el-button @click="addAuthEvent">新增权限控制</el-button>
       <el-table :data="authList" border height="320" stripe style="width: 100%;">
 				<el-table-column prop="name" :show-overflow-tooltip="tooltip" label="权限名称"></el-table-column>
-				<el-table-column prop="machine" :show-overflow-tooltip="tooltip" :formatter="displayFormat" label="控制类型"></el-table-column>
-				<el-table-column prop="keyword" :show-overflow-tooltip="tooltip" label="控制标识"></el-table-column>
+				<el-table-column prop="machine" :show-overflow-tooltip="tooltip" sortable :formatter="displayFormat" label="控制类型"></el-table-column>
+				<el-table-column prop="keyword" :show-overflow-tooltip="tooltip" label="控制标识" sortable></el-table-column>
 				<el-table-column prop="roles" :show-overflow-tooltip="tooltip" :formatter="displayFormat" label="应用角色"></el-table-column>
 				<el-table-column prop="state" :show-overflow-tooltip="tooltip" :formatter="displayFormat" label="状态"></el-table-column>
 				<el-table-column width="125" label="操作">
@@ -387,10 +388,10 @@ Authority.prototype = {
 				}
 			},
 			methods: {
-				addBtnEvent: () => {
+				addBtnEvent: $.getRole( that.name, "addBtn", () => {
           that.addDialogComponent.show();
-				},
-				authBtnEvent: () => {
+				}),
+				authBtnEvent: $.getRole( that.name, "authBtn", () => {
 					$.post("/authority/selectByExample", function(response) {
             that.authDialogComponent._vue.$data.authList = response.data || [];
             that.authDialogComponent._vue.$data.authList.forEach((item)=> {
@@ -398,18 +399,18 @@ Authority.prototype = {
             });
             that.authDialogComponent.show();
           });
-				},
-				findBtnEvent: ()=> {
+				}),
+				findBtnEvent: $.getRole( that.name, "findBtn", () => {
 					that.loadTable();
-				},
-				editBtnEvent: (index, row) => {
+				}),
+				editBtnEvent: $.getRole( that.name, "editBtn", (index, row) => {
           that.editDialogComponent._vue.$data.form = Util.clone(row);
           that.editDialogComponent.show();
-				},
-				delBtnEvent: (index, row) => {
+				}),
+				delBtnEvent: $.getRole( that.name, "delBtn", (index, row) => {
 					that.delDialogComponent._vue.$data.rowData = row;
 					that.delDialogComponent.show();
-				},
+				}),
 				displayFormat: function(row, column, cellValue, index) {
 					var obj;
 					switch(column.property) {

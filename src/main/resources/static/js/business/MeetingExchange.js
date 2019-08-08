@@ -2,6 +2,7 @@ var MeetingExchange = function () {
 }
 
 MeetingExchange.prototype = {
+    name: "meetingExchange",
     /**
      * 构造组件动作.
      */
@@ -177,6 +178,7 @@ MeetingExchange.prototype = {
     getDelDialog: function () {
         return new Dialog({
             title: "删除",
+            body: `是否删除选择行?`,
             data: {
                 rowData: {}
             },
@@ -270,11 +272,11 @@ MeetingExchange.prototype = {
                 }]
             },
             methods: {
-                addBtnEvent: () => {
+                addBtnEvent: $.getRole( that.name, "addBtn", () => {
                     that.addDialogComponent.show();
-                },
+                }),
 
-                editBtnEvent: (index, row) => {
+                editBtnEvent: $.getRole( that.name, "editBtn", (index, row) => {
                     that.editDialogComponent._vue.$data.provinces = ic_sms.address.filter((add) => {
                         return add.parentid == row.country
                     });
@@ -285,14 +287,14 @@ MeetingExchange.prototype = {
                     that.editDialogComponent._vue.$data.form.country=window.ic_sms["国"][0];
                     that.editDialogComponent._vue.$data.form.cUser = that.editDialogComponent._vue.$data.form.cuser;
                     that.editDialogComponent.show();
-                },
-                delBtnEvent: (index, row) => {
+                }),
+                delBtnEvent: $.getRole( that.name, "delBtn", (index, row) => {
                     that.delDialogComponent._vue.$data.rowData = row;
                     that.delDialogComponent.show();
-                },
-                search: () => {
+                }),
+                search: $.getRole( that.name, "findBtn", () => {
                     that.loadTable();
-                },
+                }),
                 select_change: (areaid) => {
                     var curAdd;
                     window.ic_sms.address.forEach((add) => {
@@ -312,12 +314,12 @@ MeetingExchange.prototype = {
                         that.mainTable.$data.search_form.city = "";
                     }
                 },
-                exportTable: () => {
-                    var searchForm=that.page_vue.$data.search_form;
+                exportTable: $.getRole( that.name, "export", () => {
+                    var searchForm=that.mainTable.$data.search_form;
                     var cloneObj = Util.clone(searchForm);
                     cloneObj.theme = cloneObj.theme ? `%${cloneObj.theme}%` : '';
                     exportTable("meeting",searchForm,this.titles,this.fields,"会议交流管理");
-                }
+                })
             },
         })
     },
@@ -346,6 +348,24 @@ MeetingExchange.prototype = {
                         data.provience = address.areaname;
                     }
                 });
+            });
+            data.data.sort((a, b)=> {
+                var t1, t2, t3, t4;
+                try {
+                    t1 = moment(a.year, "YYYY");
+                    t2 = moment(b.year, "YYYY");
+                    t3 = moment(a.meetingTime, "MM-DD mm:ss");
+                    t4 = moment(b.meetingTime, "MM-DD mm:ss");
+                } catch (error) {
+                    
+                }
+                if (a.year == b.year && a.meetingTime == b.meetingTime) {
+                    return 0;
+                }
+                if (a.year == b.year) {
+                    return moment.max(t3, t4) == t3 ? -1: 1;
+                }
+                return moment.max(t1, t2) == t1 ? -1: 1;
             });
             that.mainTable.$data.MeetingTable = data.data || [];
             $.ic.loadUI.hide();

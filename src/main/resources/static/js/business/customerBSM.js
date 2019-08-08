@@ -1,6 +1,7 @@
 var CustomerBuySysManage = function () { }
 
 CustomerBuySysManage.prototype = {
+  name: "customerBSM",
   /**
    * 构造组件动作.
    */
@@ -35,6 +36,7 @@ CustomerBuySysManage.prototype = {
       password: "",
       site: "",
       uid: "",
+      remark: "",
       regTime: new Date()
     }
   },
@@ -64,25 +66,19 @@ CustomerBuySysManage.prototype = {
           <el-form-item label="注册时间：">
             <el-date-picker v-model="form.regTime" type="date" placeholder="选择日期" style="width: 100%"></el-date-picker>
           </el-form-item>
+          <el-form-item label="备注：">
+            <el-input type="textarea" v-model="form.remark"></el-input>
+          </el-form-item>
         </el-form>`,
       data: {
         form: that.newform()
       },
       methods: {
-        showPwdEvent: function() {
-          var showPwdRoles = "";
-          var auths = ic_sms.auths.filter((it)=> {
-            return it.machine == "0002" && it.keyword == "showCustomPwd"
-          }).forEach((it)=> {
-            showPwdRoles += it.roles;
-          });
-          if (showPwdRoles.indexOf(ic_sms.user.rid) == -1) {
-            return alert("没有权限");
-          }
+        showPwdEvent: $.getRole( that.name, "showPwd", function() {
           $.post("/pwd/selectByExample", {rid: this._vue.$data.form.gid}, function(response) {
             alert(response.data[0] && (response.data[0].pwd || ""));
           })
-        }
+        })
       },
       buttons: [
         {
@@ -174,20 +170,20 @@ CustomerBuySysManage.prototype = {
         }
       },
       methods: {
-        addBtnEvent: () => {
+        addBtnEvent: $.getRole( that.name, "addBtn", () => {
           that.addDialogComponent.show();
-        },
-        findBtnEvent: () => {
+        }),
+        findBtnEvent: $.getRole( that.name, "findBtn", () => {
           that.loadTable();
-        },
-        editBtnEvent: (index, row) => {
+        }),
+        editBtnEvent: $.getRole( that.name, "editBtn", (index, row) => {
           that.editDialogComponent._vue.$data.form = Util.clone(row);
           that.editDialogComponent.show();
-        },
-        delBtnEvent: (index, row) => {
+        }),
+        delBtnEvent: $.getRole( that.name, "delBtn", (index, row) => {
           that.delDialogComponent._vue.$data.rowData = row;
           that.delDialogComponent.show();
-        },
+        }),
         displayFormat: function(row, column, cellValue, index) {
           switch(column.property) {
             case "password":
@@ -196,12 +192,12 @@ CustomerBuySysManage.prototype = {
               return cellValue;
           }
         },
-        exportTable: () => {
+        exportTable: $.getRole( that.name, "export", () => {
           var searchForm=that.page_vue.$data.search_form;
           var cloneObj = Util.clone(searchForm);
           cloneObj.name = cloneObj.name ? `%${cloneObj.name}%` : '';
           exportTable("purchase",searchForm,this.titles,this.fields,"客户采购系统管理");
-        }
+        })
       },
     })
   },

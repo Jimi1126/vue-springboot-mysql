@@ -2,10 +2,19 @@ package com.iconfluence.sms.mapper;
 
 import com.iconfluence.sms.model.IcSmsContract;
 import com.iconfluence.sms.model.IcSmsContractExample;
-import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.type.JdbcType;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Arg;
+import org.apache.ibatis.annotations.ConstructorArgs;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.DeleteProvider;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.type.JdbcType;
 
 public interface IcSmsContractMapper extends BaseMapper<IcSmsContract, IcSmsContractExample> {
     /**
@@ -34,7 +43,7 @@ public interface IcSmsContractMapper extends BaseMapper<IcSmsContract, IcSmsCont
      */
     @Delete({
         "delete from ic_sms_contract",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     int deleteByPrimaryKey(String gid);
 
@@ -45,20 +54,20 @@ public interface IcSmsContractMapper extends BaseMapper<IcSmsContract, IcSmsCont
      * @mbg.generated
      */
     @Insert({
-        "insert into ic_sms_contract (gid, customer_name, ",
-        "name, type, trade, ",
-        "term, contract_time, ",
-        "over_time, status, ",
-        "cooperation_type, return_time, ",
-        "quality, remark, ",
-        "uid)",
+        "insert into ic_sms_contract (GID, CUSTOMER_NAME, ",
+        "NAME, TYPE, TRADE, ",
+        "TERM, CONTRACT_TIME, ",
+        "OVER_TIME, STATUS, ",
+        "COOPERATION_TYPE, RETURN_TIME, ",
+        "QUALITY, REMARK, ",
+        "UID, PROJ_CODE, EN_NAME)",
         "values (#{gid,jdbcType=VARCHAR}, #{customerName,jdbcType=VARCHAR}, ",
         "#{name,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{trade,jdbcType=VARCHAR}, ",
         "#{term,jdbcType=VARCHAR}, #{contractTime,jdbcType=VARCHAR}, ",
         "#{overTime,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, ",
         "#{cooperationType,jdbcType=VARCHAR}, #{returnTime,jdbcType=VARCHAR}, ",
         "#{quality,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, ",
-        "#{uid,jdbcType=VARCHAR})"
+        "#{uid,jdbcType=VARCHAR}, #{projCode,jdbcType=VARCHAR}, #{enName,jdbcType=VARCHAR})"
     })
     int insert(IcSmsContract record);
 
@@ -79,20 +88,22 @@ public interface IcSmsContractMapper extends BaseMapper<IcSmsContract, IcSmsCont
      */
     @SelectProvider(type=IcSmsContractSqlProvider.class, method="selectByExample")
     @ConstructorArgs({
-        @Arg(column="gid", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
-        @Arg(column="customer_name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="type", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="trade", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="term", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="contract_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="over_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="status", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="cooperation_type", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="return_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="quality", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="remark", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="uid", javaType=String.class, jdbcType=JdbcType.VARCHAR)
+        @Arg(column="GID", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
+        @Arg(column="CUSTOMER_NAME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="NAME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="TYPE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="TRADE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="TERM", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="CONTRACT_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="OVER_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="STATUS", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="COOPERATION_TYPE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="RETURN_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="QUALITY", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="REMARK", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="UID", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="PROJ_CODE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="EN_NAME", javaType=String.class, jdbcType=JdbcType.VARCHAR)
     })
     List<IcSmsContract> selectByExample(IcSmsContractExample example);
 
@@ -104,26 +115,28 @@ public interface IcSmsContractMapper extends BaseMapper<IcSmsContract, IcSmsCont
      */
     @Select({
         "select",
-        "gid, customer_name, name, type, trade, term, contract_time, over_time, status, ",
-        "cooperation_type, return_time, quality, remark, uid",
+        "GID, CUSTOMER_NAME, NAME, TYPE, TRADE, TERM, CONTRACT_TIME, OVER_TIME, STATUS, ",
+        "COOPERATION_TYPE, RETURN_TIME, QUALITY, REMARK, UID, PROJ_CODE, EN_NAME",
         "from ic_sms_contract",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     @ConstructorArgs({
-        @Arg(column="gid", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
-        @Arg(column="customer_name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="type", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="trade", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="term", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="contract_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="over_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="status", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="cooperation_type", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="return_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="quality", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="remark", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="uid", javaType=String.class, jdbcType=JdbcType.VARCHAR)
+        @Arg(column="GID", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
+        @Arg(column="CUSTOMER_NAME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="NAME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="TYPE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="TRADE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="TERM", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="CONTRACT_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="OVER_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="STATUS", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="COOPERATION_TYPE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="RETURN_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="QUALITY", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="REMARK", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="UID", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="PROJ_CODE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="EN_NAME", javaType=String.class, jdbcType=JdbcType.VARCHAR)
     })
     IcSmsContract selectByPrimaryKey(String gid);
 
@@ -162,20 +175,22 @@ public interface IcSmsContractMapper extends BaseMapper<IcSmsContract, IcSmsCont
      */
     @Update({
         "update ic_sms_contract",
-        "set customer_name = #{customerName,jdbcType=VARCHAR},",
-          "name = #{name,jdbcType=VARCHAR},",
-          "type = #{type,jdbcType=VARCHAR},",
-          "trade = #{trade,jdbcType=VARCHAR},",
-          "term = #{term,jdbcType=VARCHAR},",
-          "contract_time = #{contractTime,jdbcType=VARCHAR},",
-          "over_time = #{overTime,jdbcType=VARCHAR},",
-          "status = #{status,jdbcType=VARCHAR},",
-          "cooperation_type = #{cooperationType,jdbcType=VARCHAR},",
-          "return_time = #{returnTime,jdbcType=VARCHAR},",
-          "quality = #{quality,jdbcType=VARCHAR},",
-          "remark = #{remark,jdbcType=VARCHAR},",
-          "uid = #{uid,jdbcType=VARCHAR}",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "set CUSTOMER_NAME = #{customerName,jdbcType=VARCHAR},",
+          "NAME = #{name,jdbcType=VARCHAR},",
+          "TYPE = #{type,jdbcType=VARCHAR},",
+          "TRADE = #{trade,jdbcType=VARCHAR},",
+          "TERM = #{term,jdbcType=VARCHAR},",
+          "CONTRACT_TIME = #{contractTime,jdbcType=VARCHAR},",
+          "OVER_TIME = #{overTime,jdbcType=VARCHAR},",
+          "STATUS = #{status,jdbcType=VARCHAR},",
+          "COOPERATION_TYPE = #{cooperationType,jdbcType=VARCHAR},",
+          "RETURN_TIME = #{returnTime,jdbcType=VARCHAR},",
+          "QUALITY = #{quality,jdbcType=VARCHAR},",
+          "REMARK = #{remark,jdbcType=VARCHAR},",
+          "UID = #{uid,jdbcType=VARCHAR},",
+          "PROJ_CODE = #{projCode,jdbcType=VARCHAR},",
+          "EN_NAME = #{enName,jdbcType=VARCHAR}",
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(IcSmsContract record);
 }

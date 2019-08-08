@@ -1,0 +1,5 @@
+ALTER TABLE `sms`.`ic_sms_customer_contact` 
+ADD COLUMN `GRADE` VARCHAR(32) NULL AFTER `MAIN_CONTACT`;
+
+ALTER TABLE `sms`.`ic_sms_customer_contact` 
+ADD COLUMN `LAST_TIME` VARCHAR(19) NULL AFTER `GRADE`;

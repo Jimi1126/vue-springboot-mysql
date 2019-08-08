@@ -2,10 +2,19 @@ package com.iconfluence.sms.mapper;
 
 import com.iconfluence.sms.model.IcSmsPurchase;
 import com.iconfluence.sms.model.IcSmsPurchaseExample;
-import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.type.JdbcType;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Arg;
+import org.apache.ibatis.annotations.ConstructorArgs;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.DeleteProvider;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
+import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.type.JdbcType;
 
 public interface IcSmsPurchaseMapper extends BaseMapper<IcSmsPurchase, IcSmsPurchaseExample> {
     /**
@@ -34,7 +43,7 @@ public interface IcSmsPurchaseMapper extends BaseMapper<IcSmsPurchase, IcSmsPurc
      */
     @Delete({
         "delete from ic_sms_purchase",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     int deleteByPrimaryKey(String gid);
 
@@ -45,14 +54,14 @@ public interface IcSmsPurchaseMapper extends BaseMapper<IcSmsPurchase, IcSmsPurc
      * @mbg.generated
      */
     @Insert({
-        "insert into ic_sms_purchase (gid, name, ",
-        "usercode, password, ",
-        "site, uid, create_time, ",
-        "reg_time)",
+        "insert into ic_sms_purchase (GID, NAME, ",
+        "USERCODE, PASSWORD, ",
+        "SITE, UID, CREATE_TIME, ",
+        "REG_TIME, REMARK)",
         "values (#{gid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, ",
         "#{usercode,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, ",
         "#{site,jdbcType=VARCHAR}, #{uid,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, ",
-        "#{regTime,jdbcType=VARCHAR})"
+        "#{regTime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})"
     })
     int insert(IcSmsPurchase record);
 
@@ -73,14 +82,15 @@ public interface IcSmsPurchaseMapper extends BaseMapper<IcSmsPurchase, IcSmsPurc
      */
     @SelectProvider(type=IcSmsPurchaseSqlProvider.class, method="selectByExample")
     @ConstructorArgs({
-        @Arg(column="gid", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
-        @Arg(column="name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="usercode", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="password", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="site", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="uid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="create_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="reg_time", javaType=String.class, jdbcType=JdbcType.VARCHAR)
+        @Arg(column="GID", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
+        @Arg(column="NAME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="USERCODE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="PASSWORD", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="SITE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="UID", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="CREATE_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="REG_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="REMARK", javaType=String.class, jdbcType=JdbcType.VARCHAR)
     })
     List<IcSmsPurchase> selectByExample(IcSmsPurchaseExample example);
 
@@ -92,19 +102,20 @@ public interface IcSmsPurchaseMapper extends BaseMapper<IcSmsPurchase, IcSmsPurc
      */
     @Select({
         "select",
-        "gid, name, usercode, password, site, uid, create_time, reg_time",
+        "GID, NAME, USERCODE, PASSWORD, SITE, UID, CREATE_TIME, REG_TIME, REMARK",
         "from ic_sms_purchase",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     @ConstructorArgs({
-        @Arg(column="gid", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
-        @Arg(column="name", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="usercode", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="password", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="site", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="uid", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="create_time", javaType=String.class, jdbcType=JdbcType.VARCHAR),
-        @Arg(column="reg_time", javaType=String.class, jdbcType=JdbcType.VARCHAR)
+        @Arg(column="GID", javaType=String.class, jdbcType=JdbcType.VARCHAR, id=true),
+        @Arg(column="NAME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="USERCODE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="PASSWORD", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="SITE", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="UID", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="CREATE_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="REG_TIME", javaType=String.class, jdbcType=JdbcType.VARCHAR),
+        @Arg(column="REMARK", javaType=String.class, jdbcType=JdbcType.VARCHAR)
     })
     IcSmsPurchase selectByPrimaryKey(String gid);
 
@@ -143,14 +154,15 @@ public interface IcSmsPurchaseMapper extends BaseMapper<IcSmsPurchase, IcSmsPurc
      */
     @Update({
         "update ic_sms_purchase",
-        "set name = #{name,jdbcType=VARCHAR},",
-          "usercode = #{usercode,jdbcType=VARCHAR},",
-          "password = #{password,jdbcType=VARCHAR},",
-          "site = #{site,jdbcType=VARCHAR},",
-          "uid = #{uid,jdbcType=VARCHAR},",
-          "create_time = #{createTime,jdbcType=VARCHAR},",
-          "reg_time = #{regTime,jdbcType=VARCHAR}",
-        "where gid = #{gid,jdbcType=VARCHAR}"
+        "set NAME = #{name,jdbcType=VARCHAR},",
+          "USERCODE = #{usercode,jdbcType=VARCHAR},",
+          "PASSWORD = #{password,jdbcType=VARCHAR},",
+          "SITE = #{site,jdbcType=VARCHAR},",
+          "UID = #{uid,jdbcType=VARCHAR},",
+          "CREATE_TIME = #{createTime,jdbcType=VARCHAR},",
+          "REG_TIME = #{regTime,jdbcType=VARCHAR},",
+          "REMARK = #{remark,jdbcType=VARCHAR}",
+        "where GID = #{gid,jdbcType=VARCHAR}"
     })
     int updateByPrimaryKey(IcSmsPurchase record);
 }

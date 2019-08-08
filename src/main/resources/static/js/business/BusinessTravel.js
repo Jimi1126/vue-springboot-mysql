@@ -2,6 +2,7 @@ var BusinessTravel = function () {
 }
 
 BusinessTravel.prototype = {
+    name: "businessTravel",
     /**
      * 构造组件动作.
      */
@@ -107,13 +108,13 @@ BusinessTravel.prototype = {
                       <el-form-item label="客户接访人员:">
                         <el-input v-model="form.cUser"></el-input>
                       </el-form-item>
-                      <el-form-item label="HL拜访参与人员:">
+                      <el-form-item label="拜访参与人员:">
                         <el-input v-model="form.hlUser"></el-input>
                       </el-form-item>
                       <el-form-item label="拜访效果:">
                         <el-input v-model="form.result"></el-input>
                       </el-form-item>
-                      <el-form-item label="备注:">
+                      <el-form-item label="拜访记录:">
                         <el-input
                           type="textarea"
                           :rows="2"
@@ -185,6 +186,7 @@ BusinessTravel.prototype = {
     getDelDialog: function () {
         return new Dialog({
             title: "删除",
+            body: `是否删除选择行?`,
             data: {
                 rowData: {}
             },
@@ -281,11 +283,10 @@ BusinessTravel.prototype = {
                 }]
             },
             methods: {
-                addBtnEvent: () => {
+                addBtnEvent: $.getRole( that.name, "addBtn", () => {
                     that.addDialogComponent.show();
-                },
-
-                editBtnEvent: (index, row) => {
+                }),
+                editBtnEvent: $.getRole( that.name, "editBtn", (index, row) => {
                     that.editDialogComponent._vue.$data.provinces = ic_sms.address.filter((add) => {
                         return add.parentid == row.country
                     });
@@ -296,14 +297,14 @@ BusinessTravel.prototype = {
                     that.editDialogComponent._vue.$data.form.country=window.ic_sms["国"][0];
                     that.editDialogComponent._vue.$data.form.cUser = that.editDialogComponent._vue.$data.form.cuser;
                     that.editDialogComponent.show();
-                },
-                delBtnEvent: (index, row) => {
+                }),
+                delBtnEvent: $.getRole( that.name, "delBtn", (index, row) => {
                     that.delDialogComponent._vue.$data.rowData = row;
                     that.delDialogComponent.show();
-                },
-                search() {
+                }),
+                search: $.getRole( that.name, "findBtn", () => {
                     that.loadTable();
-                },
+                }),
                 select_change: (areaid) => {
                     var curAdd;
                     window.ic_sms.address.forEach((add) => {
@@ -323,12 +324,12 @@ BusinessTravel.prototype = {
                         that.mainTable.$data.search_form.city = "";
                     }
                 },
-                exportTable:()=>{
-                    var searchForm=that.page_vue.$data.search_form;
+                exportTable: $.getRole( that.name, "export", () => {
+                    var searchForm=that.mainTable.$data.search_form;
                     var cloneObj = Util.clone(searchForm);
                     cloneObj.visitUnit = cloneObj.visitUnit ? `%${cloneObj.visitUnit}%` : '';
                     exportTable("businessVisit",searchForm,this.titles,this.fields,"出差拜访管理");
-                }
+                })
 
             },
         })
@@ -358,6 +359,24 @@ BusinessTravel.prototype = {
                         data.province = address.areaname;
                     }
                 });
+            });
+            data.data.sort((a, b)=> {
+                var t1, t2, t3, t4;
+                try {
+                    t1 = moment(a.year, "YYYY");
+                    t2 = moment(b.year, "YYYY");
+                    t3 = moment(a.visitTime, "MM-DD mm:ss");
+                    t4 = moment(b.visitTime, "MM-DD mm:ss");
+                } catch (error) {
+                    
+                }
+                if (a.year == b.year && a.visitTime == b.visitTime) {
+                    return 0;
+                }
+                if (a.year == b.year) {
+                    return moment.max(t3, t4) == t3 ? -1: 1;
+                }
+                return moment.max(t1, t2) == t1 ? -1: 1;
             });
             that.mainTable.$data.travelTable = data.data || [];
             $.ic.loadUI.hide();
